@@ -1,0 +1,7 @@
+{
+  "name": "Wristory Tezos Token Hub",
+  "description": "A comprehensive management and strategy platform for the Wristory NFT project on Tezos, featuring tokenomics planning, collection management for the Independence Activist series, and AI-driven community engagement.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
