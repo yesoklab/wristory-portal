@@ -67,4 +67,3 @@ const AirdropView: React.FC<{ lang: 'ko' | 'en' }> = ({ lang }) => {
 };
 
 export default AirdropView;
-
