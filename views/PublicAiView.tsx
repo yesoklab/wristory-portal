@@ -89,4 +89,3 @@ const PublicAiView: React.FC<{ lang: 'ko' | 'en' }> = ({ lang }) => {
 };
 
 export default PublicAiView;
-
