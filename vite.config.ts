@@ -1,13 +1,18 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // 깃허브 페이지 배포 시 '아이디.github.io/레포이름/' 경로를 인식하기 위해 base를 './'로 설정합니다.
+  // GitHub Pages 배포 시 절대 경로 이슈를 해결하기 위해 './'를 사용합니다.
   base: './',
   build: {
     outDir: 'dist',
-    sourcemap: false
+    assetsDir: 'assets',
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: undefined
+      }
+    }
   }
 });
