@@ -41,4 +41,3 @@ const GuideView: React.FC<{ lang: 'ko' | 'en' }> = ({ lang }) => {
 };
 
 export default GuideView;
-
