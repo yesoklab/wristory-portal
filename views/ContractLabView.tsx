@@ -1,255 +1,224 @@
 
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
-  ShieldCheck, 
-  Sparkles, 
+  Copy, 
+  ExternalLink, 
+  CheckCircle2, 
+  Activity, 
+  Wand2, 
+  ImageIcon, 
+  Link2, 
   Loader2, 
-  CheckCircle2,
-  Settings2,
-  Trophy,
-  PartyPopper,
-  Fingerprint,
-  Zap,
-  ChevronRight,
-  RefreshCw,
-  Crown,
-  History,
-  ExternalLink,
-  Smartphone,
-  Cpu,
-  Flag,
-  Award,
-  ScrollText,
-  Flame
+  ArrowRight, 
+  ShieldCheck, 
+  Coins,
+  Search,
+  Wallet,
+  Sparkles
 } from 'lucide-react';
-import { generateNFTMetadata, generateNFTImage } from '../services/geminiService';
 
 const ContractLabView: React.FC = () => {
-  // 사용자가 방금 배포하고 TzKT에서 확인한 최종 주소
-  const [contractAddress, setContractAddress] = useState('KT1ThUQdUbMSyzAveKRDNJnW3AMrMnBqbxk7');
-  const [activistName, setActivistName] = useState('');
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [metadata, setMetadata] = useState<any>(null);
-  const [nftImage, setNftImage] = useState<string | null>(null);
-  const [isMinting, setIsMinting] = useState(false);
-  const [isCelebrated, setIsCelebrated] = useState(false);
+  const [myWallet] = useState('tz1eXLHqJXBnp4VFGwFDfMGWcLYVgBUYnA16');
+  // 새로 확인된 최종 메인넷 컨트랙트 주소
+  const contractAddress = 'KT193FiCoUkthuDXcZ6Chr1J19TRoJqjWSYu';
+  const [copied, setCopied] = useState<string | null>(null);
+  
+  const [tokenName, setTokenName] = useState('Wristory Token');
+  const [tokenSymbol, setTokenSymbol] = useState('WR');
+  const [decimals, setDecimals] = useState('6'); 
+  const [imageCid, setImageCid] = useState(''); 
+  const [loadingMetadata, setLoadingMetadata] = useState(false);
+  const [finalJson, setFinalJson] = useState<any>(null);
+  const [jsonCid, setJsonCid] = useState(''); 
 
-  useEffect(() => {
-    // 페이지 진입 시 성공 축하 연출
-    const timer = setTimeout(() => setIsCelebrated(true), 500);
-    return () => clearTimeout(timer);
-  }, []);
+  const stringToHex = (str: string): string => {
+    return Array.from(str)
+      .map(char => char.charCodeAt(0).toString(16).padStart(2, '0'))
+      .join('');
+  };
 
-  const handleFullGeneration = async () => {
-    if (!activistName.trim()) return;
-    setIsGenerating(true);
-    setMetadata(null);
-    setNftImage(null);
+  const handleGenerateTokenJson = async () => {
+    if (!imageCid.startsWith('Qm') && !imageCid.startsWith('ba')) {
+      alert("먼저 Pinata에 토큰 로고 이미지를 업로드하고 CID를 입력해주세요.");
+      return;
+    }
+    setLoadingMetadata(true);
     try {
-      const [metaResult, imageResult] = await Promise.all([
-        generateNFTMetadata(activistName),
-        generateNFTImage(activistName)
-      ]);
-      setMetadata(metaResult);
-      setNftImage(imageResult);
+      const ipfsUrl = `ipfs://${imageCid}`;
+      const tokenMetadata = {
+        name: tokenName,
+        symbol: tokenSymbol,
+        decimals: parseInt(decimals),
+        description: "Utility & Governance token for the WRISTORY Digital Heritage project. Preserving history through blockchain.",
+        thumbnailUri: ipfsUrl,
+        displayUri: ipfsUrl,
+        artifactUri: ipfsUrl,
+        creators: ["WRISTORY Project"],
+        isTransferable: true,
+        shouldPreferSymbol: true
+      };
+      setFinalJson(tokenMetadata);
     } catch (error) {
-      alert("AI 생성 중 오류가 발생했습니다. 다시 시도해주세요.");
+      alert("데이터 생성 중 오류가 발생했습니다.");
     } finally {
-      setIsGenerating(false);
+      setLoadingMetadata(false);
     }
   };
 
-  const handleMint = () => {
-    setIsMinting(true);
-    setTimeout(() => {
-      setIsMinting(false);
-      alert(`[역사적 순간] ${activistName} 독립운동가 NFT가 사용자님의 컨트랙트를 통해 블록체인에 새겨졌습니다!`);
-    }, 3000);
+  const metadataUpdateParam = jsonCid 
+    ? `(Pair 0 (Map (Elt "" 0x${stringToHex('ipfs://' + jsonCid)})))` 
+    : 'JSON 업로드 후 CID를 입력하세요';
+
+  const handleCopy = (text: string, id: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(id);
+    setTimeout(() => setCopied(null), 2000);
   };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-12 py-8 animate-in fade-in duration-1000">
+    <div className="max-w-6xl mx-auto space-y-12 py-10 px-4 animate-in fade-in duration-1000 pb-40 text-slate-100">
       
-      {/* 🇰🇷 메인넷 배포 성공 기념 배너 */}
-      <section className={`relative transition-all duration-1000 transform ${isCelebrated ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-        <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-emerald-500 to-red-600 rounded-[4rem] blur opacity-20 animate-pulse" />
-        <div className="relative bg-slate-900 border-2 border-white/10 rounded-[3.5rem] p-12 md:p-16 overflow-hidden">
-          <div className="absolute top-0 right-0 p-16 text-emerald-500/5 pointer-events-none">
-            <Flag size={240} strokeWidth={1} />
+      {/* 🚀 WR TOKEN CONTROL CENTER */}
+      <div className="bg-gradient-to-br from-slate-900 to-emerald-900/30 border-4 border-emerald-500/50 rounded-[4rem] p-12 shadow-[0_0_80px_rgba(16,185,129,0.15)] relative overflow-hidden">
+        <div className="absolute top-[-50px] right-[-50px] opacity-10 rotate-12"><Sparkles size={400} /></div>
+        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
+          <div className="space-y-6 text-center md:text-left">
+            <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-[10px] font-black uppercase tracking-widest">
+              <ShieldCheck size={14} />
+              <span>Token Metadata: Synchronized</span>
+            </div>
+            <h2 className="text-5xl md:text-7xl font-black italic tracking-tighter text-white uppercase leading-[0.9]">
+              WR 토큰 <br/> <span className="text-emerald-500">메타데이터 연구소</span>
+            </h2>
+            <p className="text-xl text-slate-400 font-medium max-w-xl">
+              현재 {contractAddress} <br/>
+              메타데이터가 성공적으로 적용되었습니다. 향후 정보 수정 시 이 연구실을 사용하세요.
+            </p>
           </div>
           
-          <div className="flex flex-col md:flex-row items-center justify-between gap-12 relative z-10">
-            <div className="space-y-6 text-center md:text-left">
-              <div className="flex items-center justify-center md:justify-start gap-4">
-                <span className="px-5 py-2 bg-emerald-500 text-slate-950 text-xs font-black uppercase tracking-[0.4em] rounded-full shadow-[0_0_20px_rgba(16,185,129,0.4)]">Mainnet Live</span>
-                <div className="flex -space-x-2">
-                  {[1,2,3].map(i => <div key={i} className="w-8 h-8 rounded-full border-2 border-slate-900 bg-blue-600 flex items-center justify-center"><Award size={14} /></div>)}
-                </div>
-              </div>
-              <h1 className="text-5xl md:text-7xl font-black text-white italic tracking-tighter leading-none">
-                HISTORY IS <br/>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-blue-500">PROVISIONED</span>
-              </h1>
-              <p className="text-slate-400 text-lg max-w-md font-medium">
-                사용자님의 스마트 컨트랙트가 테조스 블록체인의 정식 노드로 등록되었습니다. 이제 독립의 외침을 디지털 자산으로 영원히 보존할 수 있습니다.
-              </p>
-            </div>
-
-            <div className="space-y-4 w-full md:w-auto">
-              <div className="bg-slate-950 p-8 rounded-[2.5rem] border border-emerald-500/20 shadow-2xl min-w-[340px] group hover:border-emerald-500/50 transition-all">
-                <div className="flex items-center justify-between mb-6">
-                  <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest">Digital Registry</span>
-                  <div className="flex gap-1">
-                    <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping" />
-                    <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
-                  </div>
-                </div>
-                <p className="font-mono text-[11px] text-slate-300 break-all leading-relaxed mb-6">{contractAddress}</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] text-slate-500 font-bold uppercase">Status: 100% Verified</span>
-                  <a href={`https://tzkt.io/${contractAddress}`} target="_blank" className="text-emerald-500 hover:text-emerald-400 flex items-center gap-1.5 text-[10px] font-black underline decoration-2 underline-offset-4">
-                    TZKT VIEW <ExternalLink size={12} />
-                  </a>
-                </div>
-              </div>
-            </div>
+          <div className="bg-black/40 backdrop-blur-xl p-8 rounded-[3rem] border border-white/10 space-y-4 shrink-0 w-full md:w-80 shadow-2xl">
+             <div className="flex justify-between items-center text-xs font-black uppercase text-slate-500 tracking-widest">
+               <span>Visual Identity</span>
+               <span className="text-blue-500">Active</span>
+             </div>
+             <div className="py-4 border-y border-white/5 flex items-center justify-center">
+                <img src="https://amaranth-legal-sole-30.mypinata.cloud/ipfs/bafybeibiohfmkqcslplibgrn4giwrhuw4r4jqkhhdm7ozj4ufk7ch46fxe" className="w-32 h-32 rounded-full border-4 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.4)]" alt="WR Token Logo" />
+             </div>
+             <div className="text-center">
+                <p className="text-lg font-black text-white italic tracking-widest">WRISTORY TOKEN</p>
+                <p className="text-[9px] text-slate-500 font-bold uppercase tracking-[0.2em]">Verified on BCD</p>
+             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* 🎭 민팅 엔진 스테이션 */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-        <div className="lg:col-span-4 space-y-8">
-          <div className="bg-slate-900 border border-slate-800 rounded-[3.5rem] p-10 shadow-2xl space-y-12">
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 text-red-500">
-                <Flame size={24} className="animate-pulse" />
-                <h3 className="text-white font-black text-xl tracking-tighter uppercase">Project Pulse</h3>
-              </div>
-              <div className="h-1 w-full bg-slate-800 rounded-full overflow-hidden">
-                <div className="h-full bg-red-600 w-1/3 animate-progress" />
-              </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        {/* 🎨 Phase 1: Create Identity */}
+        <section className="bg-slate-900/80 border-2 border-slate-800 rounded-[3.5rem] p-10 space-y-8 shadow-2xl">
+          <div className="flex items-center gap-3 border-b border-slate-800 pb-6">
+            <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white shadow-lg">
+              <ImageIcon size={24} />
             </div>
-
-            <div className="space-y-6">
-              {[
-                { label: 'Blockchain', value: 'Tezos Mainnet', icon: <Cpu size={16}/> },
-                { label: 'Contract Type', value: 'FA2 Heritage', icon: <ScrollText size={16}/> },
-                { label: 'Collection', icon: <History size={16}/>, value: 'Wristory: Activist' },
-              ].map((item, i) => (
-                <div key={i} className="flex items-center justify-between p-2 border-b border-white/5 pb-4">
-                   <div className="flex items-center gap-3 text-slate-500">
-                     {item.icon}
-                     <span className="text-[10px] font-black uppercase tracking-widest">{item.label}</span>
-                   </div>
-                   <span className="text-white text-xs font-bold">{item.value}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="p-8 bg-blue-600/10 border border-blue-500/20 rounded-[2.5rem] space-y-4">
-               <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest">Admin Tip</p>
-               <p className="text-slate-300 text-xs leading-relaxed font-medium">
-                 방금 등록하신 'wristorytoken' 주소를 통해 발행되는 모든 NFT는 사용자님의 개인 지갑으로 즉시 귀속됩니다.
-               </p>
-            </div>
+            <h3 className="text-2xl font-black italic text-white uppercase tracking-tighter">1. 메타데이터 업데이트 (필요시)</h3>
           </div>
-        </div>
-
-        <div className="lg:col-span-8">
-          <section className="bg-slate-900 border border-slate-800 rounded-[4rem] p-12 md:p-16 shadow-2xl relative overflow-hidden group">
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-blue-500/5 opacity-50 pointer-events-none" />
-            <div className="relative z-10 space-y-12">
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-slate-800 pb-12">
-                <div className="space-y-3">
-                  <h3 className="text-8xl font-black text-white italic tracking-tighter leading-none uppercase">RECORDING</h3>
-                  <div className="flex items-center gap-3">
-                    <span className="w-3 h-3 bg-red-500 rounded-full animate-pulse shadow-[0_0_15px_#ef4444]" />
-                    <p className="text-slate-500 font-black uppercase tracking-[0.3em] text-[10px]">Independent Korea Memorial Engine</p>
-                  </div>
-                </div>
+          
+          <div className="space-y-6">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">토큰 이름</label>
+                <input type="text" value={tokenName} onChange={(e) => setTokenName(e.target.value)} className="w-full bg-black border border-slate-800 rounded-2xl px-6 py-4 text-white font-bold" />
               </div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">심볼 (WR)</label>
+                <input type="text" value={tokenSymbol} onChange={(e) => setTokenSymbol(e.target.value)} className="w-full bg-black border border-slate-800 rounded-2xl px-6 py-4 text-emerald-400 font-black" />
+              </div>
+            </div>
 
-              <div className="flex flex-col md:flex-row gap-6">
-                <div className="flex-1 relative">
-                  <input 
-                    type="text" 
-                    value={activistName}
-                    onChange={(e) => setActivistName(e.target.value)}
-                    placeholder="성함 입력 (안중근, 유관순...)"
-                    className="w-full bg-slate-950 border-2 border-slate-800 rounded-[3rem] px-12 py-10 text-4xl font-black text-white outline-none focus:border-emerald-500 shadow-inner placeholder:text-slate-900 transition-all focus:ring-[30px] focus:ring-emerald-500/5"
-                  />
-                  <div className="absolute right-10 top-1/2 -translate-y-1/2 text-emerald-500/20 group-focus-within:text-emerald-500 transition-colors">
-                    <Sparkles size={40} />
-                  </div>
-                </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">새 로고 CID (이미지 변경 시)</label>
+              <input 
+                type="text" 
+                value={imageCid}
+                onChange={(e) => setImageCid(e.target.value)}
+                placeholder="새로운 Qm... CID 입력"
+                className="w-full bg-black border border-slate-800 rounded-2xl px-6 py-5 text-blue-400 font-mono focus:border-blue-500 outline-none transition-all"
+              />
+            </div>
+
+            <button 
+              onClick={handleGenerateTokenJson}
+              disabled={loadingMetadata}
+              className="w-full py-5 bg-white text-slate-950 rounded-[2rem] font-black flex items-center justify-center gap-4 hover:bg-blue-500 hover:text-white transition-all shadow-xl"
+            >
+              {loadingMetadata ? <Loader2 className="animate-spin" size={24} /> : <Wand2 size={24} />}
+              <span className="text-lg">새로운 JSON 생성</span>
+            </button>
+          </div>
+
+          {finalJson && (
+            <div className="space-y-6 animate-in fade-in slide-in-from-top-4">
+              <div className="bg-black/80 p-8 rounded-[2.5rem] border border-white/5 relative">
                 <button 
-                  onClick={handleFullGeneration}
-                  disabled={isGenerating || !activistName.trim()}
-                  className="bg-white text-slate-950 px-16 py-10 rounded-[3rem] font-black text-2xl hover:bg-emerald-400 hover:scale-105 transition-all shadow-2xl active:scale-95 disabled:opacity-30"
+                  onClick={() => handleCopy(JSON.stringify(finalJson, null, 2), 'json-final')}
+                  className="absolute top-6 right-6 p-3 bg-slate-800 rounded-xl text-slate-400 hover:text-white"
                 >
-                  {isGenerating ? <Loader2 className="animate-spin" size={40} /> : "역사 생성"}
+                  {copied === 'json-final' ? <CheckCircle2 size={18} /> : <Copy size={18} />}
+                </button>
+                <pre className="text-[11px] font-mono text-blue-300 overflow-x-auto h-40 custom-scrollbar">
+                  {JSON.stringify(finalJson, null, 2)}
+                </pre>
+              </div>
+            </div>
+          )}
+        </section>
+
+        {/* 🔗 Phase 2: Mainnet Inject */}
+        <section className="bg-slate-900/80 border-2 border-emerald-500/30 rounded-[3.5rem] p-10 space-y-8 shadow-2xl relative">
+          <div className="flex items-center gap-3 border-b border-slate-800 pb-6">
+            <div className="w-12 h-12 bg-emerald-600 rounded-2xl flex items-center justify-center text-white shadow-lg">
+              <Link2 size={24} />
+            </div>
+            <h3 className="text-2xl font-black italic text-white uppercase tracking-tighter">2. 블록체인 명령 생성</h3>
+          </div>
+
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">JSON 파일의 최종 CID (Pinata)</label>
+              <input 
+                type="text" 
+                value={jsonCid}
+                onChange={(e) => setJsonCid(e.target.value)}
+                placeholder="메타데이터 JSON의 CID 입력"
+                className="w-full bg-black border border-emerald-500/30 rounded-2xl px-6 py-5 text-emerald-400 font-mono focus:border-emerald-500 outline-none"
+              />
+            </div>
+
+            <div className="bg-slate-950 p-10 rounded-[3rem] border border-white/5 space-y-6">
+              <p className="text-[10px] text-emerald-500 font-black uppercase tracking-widest">Micheline Command (SingleAsset ID:0)</p>
+              <div className="flex items-start gap-6">
+                <code className="flex-1 text-[12px] font-mono text-white/80 font-bold break-all bg-black/50 p-6 rounded-2xl border border-white/5">
+                  {metadataUpdateParam}
+                </code>
+                <button 
+                  onClick={() => handleCopy(metadataUpdateParam, 'final-param')}
+                  className="bg-emerald-600 p-5 rounded-2xl text-white shadow-xl hover:bg-emerald-500 transition-all active:scale-90"
+                >
+                  {copied === 'final-param' ? <CheckCircle2 size={24} /> : <Copy size={24} />}
                 </button>
               </div>
-
-              {metadata && (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 animate-in slide-in-from-bottom-32 duration-1000">
-                  <div className="aspect-[3/4] rounded-[4.5rem] overflow-hidden bg-slate-950 border-[12px] border-slate-800 shadow-[0_80px_160px_rgba(0,0,0,0.9)] relative">
-                    {nftImage ? (
-                      <img src={nftImage} alt="NFT" className="w-full h-full object-cover animate-in fade-in zoom-in duration-[4s]" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-slate-900">
-                        <Loader2 className="animate-spin text-emerald-500/30" size={100} />
-                      </div>
-                    )}
-                    <div className="absolute inset-x-0 bottom-0 p-12 bg-gradient-to-t from-black via-black/90 to-transparent text-white">
-                      <p className="font-black text-6xl tracking-tighter mb-4 italic uppercase">{metadata.name}</p>
-                      <div className="flex items-center gap-3">
-                        <Award size={16} className="text-emerald-400" />
-                        <p className="text-emerald-400 text-xs font-black uppercase tracking-[0.5em]">{metadata.era}</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex flex-col justify-between py-6">
-                    <div className="space-y-10">
-                      <div className="bg-white/5 p-12 rounded-[4rem] border border-white/5 shadow-inner backdrop-blur-md relative overflow-hidden">
-                         <p className="text-slate-200 text-2xl leading-[1.7] font-serif italic relative z-10 first-letter:text-7xl first-letter:font-black first-letter:text-emerald-500 first-letter:float-left first-letter:mr-4 first-letter:mt-2">
-                          {metadata.description}
-                        </p>
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-5">
-                        {metadata.attributes.map((attr: any, i: number) => (
-                          <div key={i} className="bg-slate-950 border border-white/5 p-6 rounded-[2.5rem] hover:bg-slate-900 transition-colors">
-                            <p className="text-[10px] text-slate-600 font-black uppercase mb-1 tracking-widest">{attr.trait_type}</p>
-                            <p className="text-white text-lg font-black truncate">{attr.value}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    <button 
-                      onClick={handleMint}
-                      disabled={isMinting || !nftImage}
-                      className="w-full py-16 mt-20 bg-emerald-600 text-white rounded-[4rem] font-black text-4xl flex items-center justify-center gap-12 hover:bg-emerald-500 transition-all shadow-[0_50px_100px_rgba(16,185,129,0.4)] active:scale-95 relative overflow-hidden group disabled:opacity-20"
-                    >
-                      {isMinting ? (
-                        <Loader2 className="animate-spin" size={70} />
-                      ) : (
-                        <>
-                          <Zap size={70} className="group-hover:scale-125 transition-transform text-yellow-300 fill-yellow-300" />
-                          <span className="tracking-tighter italic">MINT TOKEN</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </div>
-              )}
             </div>
-          </section>
-        </div>
+
+            <div className="space-y-4">
+               <a href={`https://better-call.dev/mainnet/${contractAddress}/interact/update_token_metadata`} target="_blank" className="flex items-center justify-between p-6 bg-slate-800/50 hover:bg-slate-800 border border-slate-700 rounded-3xl transition-all group shadow-xl">
+                 <div className="flex items-center gap-4">
+                   <ExternalLink className="text-blue-400" size={20} />
+                   <span className="font-bold">BCD 인터랙션 페이지 열기</span>
+                 </div>
+                 <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
+               </a>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );
