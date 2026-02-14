@@ -10,11 +10,10 @@ import {
   Key,
   Github
 } from 'lucide-react';
-import LandingPageView from './views/LandingPageView';
-import AirdropView from './views/AirdropView';
-import GuideView from './views/GuideView';
-import PublicAiView from './views/PublicAiView';
-import AdminDashboard from './views/AdminDashboard';
+import LandingPageView from './LandingPageView';
+import AirdropView from './AirdropView';
+import GuideView from './GuideView';
+import PublicAiView from './PublicAiView';
 
 export type ViewMode = 'PUBLIC' | 'ADMIN';
 export type PublicTab = 'HOME' | 'AIRDROP' | 'GUIDE' | 'AI';
@@ -177,3 +176,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+
