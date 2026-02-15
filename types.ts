@@ -25,3 +25,16 @@ export interface StrategyResponse {
   steps: string[];
 }
 
+// Global augmentation for the aistudio object provided by the environment
+// Using inline structure to prevent conflicts with local exports during interface merging
+declare global {
+  interface Window {
+    aistudio?: {
+      hasSelectedApiKey: () => Promise<boolean>;
+      openSelectKey: () => Promise<void>;
+    };
+  }
+}
+
+// Export a helper type for components that need to reference the AIStudio interface
+export type AIStudio = NonNullable<Window['aistudio']>;
