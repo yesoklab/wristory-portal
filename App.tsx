@@ -20,16 +20,6 @@ import AdminDashboard from './views/AdminDashboard';
 export type ViewMode = 'PUBLIC' | 'ADMIN';
 export type PublicTab = 'HOME' | 'AIRDROP' | 'GUIDE' | 'AI';
 
-declare global {
-  interface AIStudio {
-    hasSelectedApiKey: () => Promise<boolean>;
-    openSelectKey: () => Promise<void>;
-  }
-  interface Window {
-    aistudio?: AIStudio;
-  }
-}
-
 const App: React.FC = () => {
   const [mode, setMode] = useState<ViewMode>('PUBLIC');
   const [activeTab, setActiveTab] = useState<PublicTab>('HOME');
@@ -43,12 +33,9 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const checkApiKey = async () => {
-      // Vercel에서 주입된 API_KEY 확인
       const key = process.env.API_KEY;
       const keyExists = !!key && key.length > 10;
       
-      console.log("API Key Status:", keyExists ? "Found" : "Not Found");
-
       if (window.aistudio && typeof window.aistudio.hasSelectedApiKey === 'function') {
         const selected = await window.aistudio.hasSelectedApiKey();
         setHasApiKey(selected || keyExists);
@@ -77,11 +64,11 @@ const App: React.FC = () => {
 
   const renderPublicContent = () => {
     switch (activeTab) {
-      case 'HOME': return <LandingPageView lang={lang} onNavigate={setActiveTab} />;
+      case 'HOME': return <LandingPageView lang={lang} onNavigate={(tab: any) => setActiveTab(tab)} />;
       case 'AIRDROP': return <AirdropView lang={lang} />;
       case 'GUIDE': return <GuideView lang={lang} />;
       case 'AI': return <PublicAiView lang={lang} />;
-      default: return <LandingPageView lang={lang} onNavigate={setActiveTab} />;
+      default: return <LandingPageView lang={lang} onNavigate={(tab: any) => setActiveTab(tab)} />;
     }
   };
 
