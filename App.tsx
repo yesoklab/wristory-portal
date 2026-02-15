@@ -9,7 +9,9 @@ import {
   ShieldAlert,
   Key,
   Github,
-  AlertCircle
+  AlertCircle,
+  Settings,
+  RefreshCw
 } from 'lucide-react';
 import LandingPageView from './views/LandingPageView';
 import AirdropView from './views/AirdropView';
@@ -34,7 +36,8 @@ const App: React.FC = () => {
   useEffect(() => {
     const checkApiKey = async () => {
       const key = process.env.API_KEY;
-      const keyExists = !!key && key.length > 10;
+      // process.env.API_KEY가 빌드 시점에 주입되었는지 확인
+      const keyExists = !!key && key !== 'undefined' && key.length > 10;
       
       if (window.aistudio && typeof window.aistudio.hasSelectedApiKey === 'function') {
         const selected = await window.aistudio.hasSelectedApiKey();
@@ -54,7 +57,8 @@ const App: React.FC = () => {
       setHasApiKey(true);
       setShowKeyWarning(false);
     } else {
-      alert("Vercel 환경변수 API_KEY 설정을 확인해주세요.");
+      alert("디렉터님, Vercel 설정에 키를 이미 넣으셨다면 [Deployments] 메뉴에서 'Redeploy'를 꼭 눌러주셔야 적용됩니다!");
+      setActiveTab('GUIDE'); // 가이드 탭으로 이동하여 방법 확인 유도
     }
   };
 
@@ -75,9 +79,12 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#0F111A] text-slate-100 font-sans selection:bg-blue-500/30">
       {showKeyWarning && (
-        <div className="bg-amber-500 text-slate-950 px-4 py-2 text-center text-xs font-black flex items-center justify-center gap-2 z-[60] relative">
-          <AlertCircle size={14} /> 
-          시스템 알림: API_KEY가 설정되지 않았습니다. Vercel 환경 변수 설정을 확인하세요.
+        <div className="bg-amber-500 text-slate-950 px-4 py-3 text-center text-xs font-black flex items-center justify-center gap-3 z-[60] relative shadow-2xl">
+          <AlertCircle size={16} /> 
+          <span>시스템 알림: 키 설정 후 <b>Vercel에서 반드시 [Redeploy]</b>를 실행해야 적용됩니다!</span>
+          <button onClick={handleOpenKeySelector} className="px-3 py-1 bg-slate-950 text-white rounded-lg text-[10px] flex items-center gap-2 hover:scale-105 transition-transform">
+            <RefreshCw size={12} /> 재배포 방법 확인
+          </button>
         </div>
       )}
       
@@ -100,7 +107,7 @@ const App: React.FC = () => {
             <div className="h-6 w-[1px] bg-slate-800 mx-2" />
             <a href={GITHUB_URL} target="_blank" className="p-2 text-slate-400 hover:text-white transition-colors"><Github size={20} /></a>
             {!hasApiKey && (
-              <button onClick={handleOpenKeySelector} className="px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-500 text-xs font-black flex items-center gap-2 hover:bg-amber-500/20 transition-all shadow-lg shadow-amber-500/10"><Key size={14} /> API 연결</button>
+              <button onClick={handleOpenKeySelector} className="px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-500 text-xs font-black flex items-center gap-2 hover:bg-amber-500/20 transition-all shadow-lg shadow-amber-500/10"><RefreshCw size={14} /> 재배포 안내</button>
             )}
             <button onClick={() => setActiveTab('AI')} className={`px-5 py-2 rounded-full border border-blue-500/30 bg-blue-500/5 text-blue-400 text-sm font-black flex items-center gap-2 hover:bg-blue-500/10 transition-all shadow-lg shadow-blue-500/10 ${activeTab === 'AI' ? 'bg-blue-500/20 border-blue-500' : ''}`}><Sparkles size={14} /> AI 큐레이터</button>
             <button onClick={() => setMode('ADMIN')} className="p-2.5 bg-blue-600/10 hover:bg-blue-600 rounded-xl text-blue-400 hover:text-white transition-all border border-blue-500/30 group relative shadow-lg shadow-blue-500/5"><Lock size={18} /></button>
