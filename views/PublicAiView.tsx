@@ -1,16 +1,26 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Sparkles, Send, Loader2, History, User, MessageCircle } from 'lucide-react';
+import { Sparkles, Send, Loader2, History, User } from 'lucide-react';
 import { getCuratorResponse } from '../services/geminiService';
+
+interface Message {
+  role: 'user' | 'ai';
+  text: string;
+}
 
 const PublicAiView: React.FC<{ lang: 'ko' | 'en' }> = ({ lang }) => {
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState<{ role: 'user' | 'ai', text: string }[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setMessages([{ role: 'ai', text: lang === 'ko' ? "안녕하세요. WRISTORY의 역사 큐레이터입니다. 대한민국 독립운동가나 비트코인 연대기에 대해 궁금하신 점을 물어보세요." : "Hello. I am the WRISTORY Curator. Ask me anything about Korean independence fighters or the Bitcoin chronicles." }]);
+    setMessages([{ 
+      role: 'ai', 
+      text: lang === 'ko' 
+        ? "안녕하세요. WRISTORY의 역사 큐레이터입니다. 대한민국 독립운동가나 비트코인 연대기에 대해 궁금하신 점을 물어보세요." 
+        : "Hello. I am the WRISTORY Curator. Ask me anything about Korean independence fighters or the Bitcoin chronicles." 
+    }]);
   }, [lang]);
 
   useEffect(() => {
@@ -28,7 +38,7 @@ const PublicAiView: React.FC<{ lang: 'ko' | 'en' }> = ({ lang }) => {
 
     try {
       const reply = await getCuratorResponse(userText, lang);
-      setMessages(prev => [...prev, { role: 'ai', text: reply }]);
+      setMessages(prev => [...prev, { role: 'ai', text: reply || "" }]);
     } catch (error) {
       setMessages(prev => [...prev, { role: 'ai', text: "연결 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요." }]);
     } finally {
