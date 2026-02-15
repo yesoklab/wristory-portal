@@ -11,13 +11,17 @@ import {
   Github,
   AlertCircle,
   Settings,
-  RefreshCw
+  RefreshCw,
+  CheckCircle2,
+  Zap,
+  Globe
 } from 'lucide-react';
 import LandingPageView from './views/LandingPageView';
 import AirdropView from './views/AirdropView';
 import GuideView from './views/GuideView';
 import PublicAiView from './views/PublicAiView';
 import AdminDashboard from './views/AdminDashboard';
+import { getCuratorResponse } from './services/geminiService';
 
 export type ViewMode = 'PUBLIC' | 'ADMIN';
 export type PublicTab = 'HOME' | 'AIRDROP' | 'GUIDE' | 'AI';
@@ -29,36 +33,53 @@ const App: React.FC = () => {
   const [lang] = useState<'ko' | 'en'>('ko');
   const [hasApiKey, setHasApiKey] = useState<boolean>(true);
   const [showKeyWarning, setShowKeyWarning] = useState(false);
+  const [isTestingKey, setIsTestingKey] = useState(false);
 
   const CONTRACT_ADDRESS = 'KT193FiCoUkthuDXcZ6Chr1J19TRoJqjWSYu';
   const GITHUB_URL = 'https://github.com/yesoklab/wristory-portal';
 
   useEffect(() => {
-    const checkApiKey = async () => {
-      const key = process.env.API_KEY;
-      // process.env.API_KEY가 빌드 시점에 주입되었는지 확인
-      const keyExists = !!key && key !== 'undefined' && key.length > 10;
-      
-      if (window.aistudio && typeof window.aistudio.hasSelectedApiKey === 'function') {
-        const selected = await window.aistudio.hasSelectedApiKey();
-        setHasApiKey(selected || keyExists);
-        setShowKeyWarning(!(selected || keyExists));
-      } else {
-        setHasApiKey(keyExists);
-        setShowKeyWarning(!keyExists);
-      }
-    };
-    checkApiKey();
+    checkApiKeyStatus();
   }, []);
+
+  const checkApiKeyStatus = async () => {
+    // 1. 빌드 타임 주입 키 확인
+    const key = process.env.API_KEY;
+    const keyExists = !!key && key !== 'undefined' && key.length > 10;
+    
+    // 2. AI Studio 선택 키 확인 (있을 경우)
+    let selected = false;
+    if (window.aistudio && typeof window.aistudio.hasSelectedApiKey === 'function') {
+      selected = await window.aistudio.hasSelectedApiKey();
+    }
+
+    const isAvailable = keyExists || selected;
+    setHasApiKey(isAvailable);
+    setShowKeyWarning(!isAvailable);
+  };
+
+  const handleTestConnection = async () => {
+    setIsTestingKey(true);
+    try {
+      // 실제 API 호출로 키 작동 여부 최종 확인
+      await getCuratorResponse("Connection test request. Respond shortly.", "en");
+      alert("✅ 성공! API 키가 정상적으로 작동하고 있습니다. 이제 모든 기능을 사용하실 수 있습니다.");
+      setHasApiKey(true);
+      setShowKeyWarning(false);
+    } catch (e: any) {
+      console.error("Connection Test Failed:", e);
+      alert(`❌ 아직 연결되지 않았습니다.\n\n원인: Vercel 배포 시점에 키가 포함되지 않았을 수 있습니다.\n해결: Vercel 대시보드 [Deployments]에서 'Redeploy'를 실행해 주세요.`);
+    } finally {
+      setIsTestingKey(false);
+    }
+  };
 
   const handleOpenKeySelector = async () => {
     if (window.aistudio && typeof window.aistudio.openSelectKey === 'function') {
       await window.aistudio.openSelectKey();
-      setHasApiKey(true);
-      setShowKeyWarning(false);
+      await checkApiKeyStatus();
     } else {
-      alert("디렉터님, Vercel 설정에 키를 이미 넣으셨다면 [Deployments] 메뉴에서 'Redeploy'를 꼭 눌러주셔야 적용됩니다!");
-      setActiveTab('GUIDE'); // 가이드 탭으로 이동하여 방법 확인 유도
+      setActiveTab('GUIDE');
     }
   };
 
@@ -79,12 +100,27 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#0F111A] text-slate-100 font-sans selection:bg-blue-500/30">
       {showKeyWarning && (
-        <div className="bg-amber-500 text-slate-950 px-4 py-3 text-center text-xs font-black flex items-center justify-center gap-3 z-[60] relative shadow-2xl">
-          <AlertCircle size={16} /> 
-          <span>시스템 알림: 키 설정 후 <b>Vercel에서 반드시 [Redeploy]</b>를 실행해야 적용됩니다!</span>
-          <button onClick={handleOpenKeySelector} className="px-3 py-1 bg-slate-950 text-white rounded-lg text-[10px] flex items-center gap-2 hover:scale-105 transition-transform">
-            <RefreshCw size={12} /> 재배포 방법 확인
-          </button>
+        <div className="bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 px-6 py-4 text-center text-[12px] font-black flex flex-wrap items-center justify-center gap-6 z-[60] relative shadow-2xl border-b border-white/20">
+          <div className="flex items-center gap-3">
+            <AlertCircle size={18} className="animate-bounce" /> 
+            <span className="tracking-tight text-sm">Vercel에 API_KEY 등록 후 반드시 <b>[재배포]</b>가 완료되어야 시스템이 활성화됩니다!</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={handleTestConnection} 
+              disabled={isTestingKey}
+              className="px-5 py-2 bg-slate-950 text-white rounded-xl hover:bg-black transition-all flex items-center gap-2 shadow-lg disabled:opacity-50 active:scale-95"
+            >
+              {isTestingKey ? <RefreshCw size={14} className="animate-spin" /> : <Zap size={14} className="text-amber-400" />} 
+              실시간 연결 테스트
+            </button>
+            <button 
+              onClick={() => setActiveTab('GUIDE')} 
+              className="px-5 py-2 bg-white/20 border border-black/10 rounded-xl hover:bg-white/30 transition-all flex items-center gap-2"
+            >
+              <Globe size={14} /> 해결 가이드
+            </button>
+          </div>
         </div>
       )}
       
@@ -107,10 +143,16 @@ const App: React.FC = () => {
             <div className="h-6 w-[1px] bg-slate-800 mx-2" />
             <a href={GITHUB_URL} target="_blank" className="p-2 text-slate-400 hover:text-white transition-colors"><Github size={20} /></a>
             {!hasApiKey && (
-              <button onClick={handleOpenKeySelector} className="px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-500 text-xs font-black flex items-center gap-2 hover:bg-amber-500/20 transition-all shadow-lg shadow-amber-500/10"><RefreshCw size={14} /> 재배포 안내</button>
+              <button onClick={handleOpenKeySelector} className="px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-500 text-xs font-black flex items-center gap-2 hover:bg-amber-500/20 transition-all shadow-lg shadow-amber-500/10">
+                <Settings size={14} /> 키 설정
+              </button>
             )}
-            <button onClick={() => setActiveTab('AI')} className={`px-5 py-2 rounded-full border border-blue-500/30 bg-blue-500/5 text-blue-400 text-sm font-black flex items-center gap-2 hover:bg-blue-500/10 transition-all shadow-lg shadow-blue-500/10 ${activeTab === 'AI' ? 'bg-blue-500/20 border-blue-500' : ''}`}><Sparkles size={14} /> AI 큐레이터</button>
-            <button onClick={() => setMode('ADMIN')} className="p-2.5 bg-blue-600/10 hover:bg-blue-600 rounded-xl text-blue-400 hover:text-white transition-all border border-blue-500/30 group relative shadow-lg shadow-blue-500/5"><Lock size={18} /></button>
+            <button onClick={() => setActiveTab('AI')} className={`px-5 py-2 rounded-full border border-blue-500/30 bg-blue-500/5 text-blue-400 text-sm font-black flex items-center gap-2 hover:bg-blue-500/10 transition-all shadow-lg shadow-blue-500/10 ${activeTab === 'AI' ? 'bg-blue-500/20 border-blue-500' : ''}`}>
+              <Sparkles size={14} /> AI 큐레이터
+            </button>
+            <button onClick={() => setMode('ADMIN')} className="p-2.5 bg-blue-600/10 hover:bg-blue-600 rounded-xl text-blue-400 hover:text-white transition-all border border-blue-500/30 group relative shadow-lg shadow-blue-500/5">
+              <Lock size={18} />
+            </button>
           </div>
 
           <button className="md:hidden text-white" onClick={() => setIsMenuOpen(!isMenuOpen)}>
