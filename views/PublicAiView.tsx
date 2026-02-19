@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Sparkles, Send, Loader2, History, User } from 'lucide-react';
 import { getCuratorResponse } from '../services/geminiService';
@@ -62,7 +61,8 @@ const PublicAiView: React.FC<{ lang: 'ko' | 'en' }> = ({ lang }) => {
         {messages.map((msg, i) => (
           <div key={i} className={`flex gap-3 md:gap-6 ${msg.role === 'user' ? 'flex-row-reverse' : ''} animate-in fade-in slide-in-from-bottom-2 duration-300`}>
              <div className={`w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl shrink-0 flex items-center justify-center ${msg.role === 'user' ? 'bg-blue-600 shadow-lg shadow-blue-600/30' : 'bg-slate-800 border border-slate-700'}`}>
-               {msg.role === 'user' ? <User className="text-white" size={18} md:size={24} /> : <History className="text-blue-400" size={18} md:size={24} />}
+               {/* Fix: Lucide components do not support responsive props like md:size. Using Tailwind CSS classes for responsive sizing instead. */}
+               {msg.role === 'user' ? <User className="text-white w-[18px] h-[18px] md:w-6 md:h-6" /> : <History className="text-blue-400 w-[18px] h-[18px] md:w-6 md:h-6" />}
              </div>
              <div className={`max-w-[85%] md:max-w-[80%] p-4 md:p-8 rounded-[1.5rem] md:rounded-[2rem] text-sm md:text-lg leading-relaxed ${msg.role === 'user' ? 'bg-blue-600 text-white shadow-lg' : 'bg-slate-950 border border-white/5 text-slate-200'}`}>
                 {msg.text}
@@ -94,7 +94,8 @@ const PublicAiView: React.FC<{ lang: 'ko' | 'en' }> = ({ lang }) => {
           disabled={loading || !input.trim()}
           className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 p-3 md:p-4 bg-blue-600 hover:bg-blue-500 disabled:opacity-20 text-white rounded-xl md:rounded-2xl transition-all shadow-xl active:scale-90"
         >
-          <Send size={18} md:size={24} />
+          {/* Fix: Lucide components do not support responsive props like md:size. Using Tailwind CSS classes for responsive sizing instead. */}
+          <Send className="w-[18px] h-[18px] md:w-6 md:h-6" />
         </button>
       </form>
     </div>
