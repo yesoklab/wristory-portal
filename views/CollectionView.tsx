@@ -8,7 +8,7 @@ const collections = [
     name: 'Bitcoin Pizza Genesis: 100 - LEGENDARY', 
     price: '10,000 WR', 
     count: 100, 
-    image: 'https://images.unsplash.com/photo-1594007654729-407eedc4be65?q=80&w=1000&auto=format&fit=crop', // 피자 데이 상징적 이미지
+    image: 'https://images.unsplash.com/photo-1594007654729-407eedc4be65?q=80&w=1000&auto=format&fit=crop', 
     url: 'https://objkt.com/collections/KT1JxExPQijKy3jQdE1pHJXxoeyjHtXB3uxq',
     isNew: true
   },
@@ -49,7 +49,7 @@ const collections = [
     name: '근대화의 발자취', 
     price: '20 XTZ', 
     count: 200, 
-    image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000&auto=format&fit=crop', // 근대 산업화/헤리티지 느낌의 이미지
+    image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000&auto=format&fit=crop', 
     url: 'https://objkt.com/profile/tz1eXLHqJXBnp4VFGwFDfMGWcLYVgBUYnA16/created'
   },
 ];
