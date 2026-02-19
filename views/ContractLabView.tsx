@@ -83,26 +83,26 @@ const ContractLabView: React.FC = () => {
               <span>Token Metadata Hub: Live</span>
             </div>
             <h2 className="text-4xl md:text-7xl font-black italic tracking-tighter text-white uppercase leading-[0.9]">
-              WR 토큰 <br/> <span className="text-emerald-500 text-3xl md:text-6xl">메타데이터 제어소</span>
+              WR 토큰 <br/> <span className="text-emerald-500 text-3xl md:text-6xl text-nowrap">메타데이터 제어소</span>
             </h2>
             <p className="text-sm md:text-xl text-slate-400 font-medium max-w-xl">
-              Contract: <span className="text-blue-400 font-mono text-xs md:text-base">{contractAddress}</span><br/>
+              Contract: <span className="text-blue-400 font-mono text-xs md:text-base break-all">{contractAddress}</span><br/>
               현재 로고 및 심볼, 소수점 정보를 온체인에서 실시간 관리합니다.
             </p>
           </div>
           
-          <div className="bg-black/40 backdrop-blur-xl p-6 md:p-8 rounded-[2rem] md:rounded-[3rem] border border-white/10 space-y-4 shrink-0 w-full md:w-80 shadow-2xl">
-             <div className="flex justify-between items-center text-[10px] font-black uppercase text-slate-500 tracking-widest">
+          <div className="bg-black/40 backdrop-blur-xl p-6 md:p-8 rounded-[2rem] md:rounded-[3rem] border border-white/10 space-y-4 flex-none w-full md:w-80 shadow-2xl flex flex-col items-center">
+             <div className="w-full flex justify-between items-center text-[10px] font-black uppercase text-slate-500 tracking-widest mb-2">
                <span>Token Identity</span>
                <span className="text-emerald-500 flex items-center gap-1"><div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"/> Verified</span>
              </div>
-             <div className="py-4 border-y border-white/5 flex items-center justify-center">
-                {/* Fixed squashing on mobile: Added shrink-0 and aspect-square */}
-                <div className="relative w-32 h-32 aspect-square shrink-0 rounded-full border-4 border-emerald-500 shadow-[0_0_40px_rgba(16,185,129,0.5)] overflow-hidden flex items-center justify-center bg-slate-950">
+             <div className="w-full py-4 border-y border-white/5 flex items-center justify-center">
+                {/* 로고 찌그러짐 원천 차단: flex-none, w-32, h-32, aspect-square 고정 */}
+                <div className="relative w-32 h-32 flex-none aspect-square rounded-full border-4 border-emerald-500 shadow-[0_0_40px_rgba(16,185,129,0.5)] overflow-hidden flex items-center justify-center bg-slate-950">
                    {!logoError ? (
                      <img 
                        src={`https://gateway.pinata.cloud/ipfs/${imageCid}`} 
-                       className="w-full h-full object-cover" 
+                       className="w-full h-full object-cover flex-none" 
                        alt="WR Token Logo"
                        onError={() => setLogoError(true)}
                      />
@@ -114,8 +114,8 @@ const ContractLabView: React.FC = () => {
                    )}
                 </div>
              </div>
-             <div className="text-center">
-                <p className="text-lg font-black text-white italic tracking-widest group-hover:text-emerald-400 transition-colors">{tokenSymbol}</p>
+             <div className="text-center mt-2">
+                <p className="text-lg font-black text-white italic tracking-widest uppercase">{tokenSymbol}</p>
                 <p className="text-[9px] text-slate-500 font-bold uppercase tracking-[0.2em]">Tezos FA2 Asset</p>
              </div>
           </div>
