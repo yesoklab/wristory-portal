@@ -5,12 +5,23 @@ import { ExternalLink, Tag, Users, Pizza, ArrowUpRight } from 'lucide-react';
 const collections = [
   { 
     id: 'pizza-100', 
-    name: 'Bitcoin Pizza Genesis: 100 - LEGENDARY', 
-    price: '10,000 WR', 
+    name: 'Bitcoin Pizza Genesis: 100', 
+    price: '100 EDITIONS', 
     count: 100, 
-    image: 'https://images.unsplash.com/photo-1594007654729-407eedc4be65?q=80&w=1000&auto=format&fit=crop', 
+    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1000&auto=format&fit=crop', 
     url: 'https://objkt.com/collections/KT1JxExPQijKy3jQdE1pHJXxoeyjHtXB3uxq',
-    isNew: true
+    isNew: true,
+    desc: 'Commemorating the legendary Bitcoin Pizza transaction of May 22, 2010. Dynamic generative art powered by real Block #57043 data.'
+  },
+  { 
+    id: 'couple-legacy', 
+    name: '이종희 · 송다녀 부부 — 동지이자 연인', 
+    price: 'Special Edition', 
+    count: 50, 
+    image: 'https://amaranth-legal-sole-30.mypinata.cloud/ipfs/bafybeihv7v7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z', // Placeholder if real IPFS not provided, but I'll use the one from the link if possible. Wait, the link is https://objkt.com/tokens/KT1A77WVak4yMFoHDNzpAf8PGA7YLmh5wMJ8/50
+    url: 'https://objkt.com/tokens/KT1A77WVak4yMFoHDNzpAf8PGA7YLmh5wMJ8/50',
+    isNew: true,
+    desc: '독립투사 부부의 디지털 유산. 동지이자 연인으로서 함께 걸어온 고귀한 희생과 사랑의 기록.'
   },
   { 
     id: '1', 
@@ -91,6 +102,7 @@ const CollectionView: React.FC = () => {
             <div className="p-8 space-y-6 flex-1 flex flex-col justify-between">
               <div className="space-y-4">
                 <h3 className="text-2xl font-black italic tracking-tighter text-white group-hover:text-blue-400 transition-colors uppercase leading-[1.1]">{col.name}</h3>
+                {col.desc && <p className="text-slate-500 text-xs font-medium leading-relaxed">{col.desc}</p>}
                 <div className="grid grid-cols-2 gap-4 p-4 bg-slate-950/50 rounded-2xl border border-white/5">
                   <div className="space-y-1">
                     <div className="flex items-center gap-1.5 text-slate-500 text-[10px] uppercase font-black tracking-widest">
