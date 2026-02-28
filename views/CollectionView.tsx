@@ -18,10 +18,20 @@ const collections = [
     name: '이종희 · 송다녀 부부 — 동지이자 연인', 
     price: 'Special Edition', 
     count: 50, 
-    image: 'https://amaranth-legal-sole-30.mypinata.cloud/ipfs/bafybeihv7v7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z', // Placeholder if real IPFS not provided, but I'll use the one from the link if possible. Wait, the link is https://objkt.com/tokens/KT1A77WVak4yMFoHDNzpAf8PGA7YLmh5wMJ8/50
+    image: 'https://amaranth-legal-sole-30.mypinata.cloud/ipfs/bafybeihv7v7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z', 
     url: 'https://objkt.com/tokens/KT1A77WVak4yMFoHDNzpAf8PGA7YLmh5wMJ8/50',
     isNew: true,
     desc: '독립투사 부부의 디지털 유산. 동지이자 연인으로서 함께 걸어온 고귀한 희생과 사랑의 기록.'
+  },
+  { 
+    id: 'president-calligraphy', 
+    name: '이재명 대통령 캘리그래피 — 집과 시간의 언어', 
+    price: 'Featured', 
+    count: 1, 
+    image: 'https://amaranth-legal-sole-30.mypinata.cloud/ipfs/bafkreiega3qk3oh3r6u6uwqr2f4uvkynpdpmsrmcwrdlld3oqjmawk62ya',
+    url: 'https://objkt.com/tokens/KT1A77WVak4yMFoHDNzpAf8PGA7YLmh5wMJ8/52?ref=tz1eXLHqJXBnp4VFGwFDfMGWcLYVgBUYnA16',
+    isNew: true,
+    desc: '최승균 작가님이 이재명 대통령의 어록 "집은 사는 곳이지 사는 것이 아닙니다."를 캘리그래피로 승화시킨 작품입니다.'
   },
   { 
     id: '1', 
