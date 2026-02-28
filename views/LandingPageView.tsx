@@ -280,7 +280,7 @@ const LandingPageView: React.FC<Props> = ({ onNavigate }) => {
         <div className="bg-slate-900/60 border border-slate-800 rounded-[3.5rem] overflow-hidden flex flex-col lg:flex-row shadow-2xl group">
           <div className="lg:w-1/2 aspect-square lg:aspect-auto overflow-hidden">
             <img 
-              src="https://amaranth-legal-sole-30.mypinata.cloud/ipfs/bafybeihv7v7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z7z" // Placeholder for the calligraphy
+              src="https://amaranth-legal-sole-30.mypinata.cloud/ipfs/bafkreiega3qk3oh3r6u6uwqr2f4uvkynpdpmsrmcwrdlld3oqjmawk62ya" 
               alt="President Lee Jae-myeong Calligraphy" 
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
             />
@@ -294,11 +294,13 @@ const LandingPageView: React.FC<Props> = ({ onNavigate }) => {
                 이재명 대통령 캘리그래피 — <br/>
                 <span className="text-blue-500">집과 시간의 언어</span>
               </h3>
-              <p className="text-slate-400 text-lg font-medium leading-relaxed">
-                "President Lee Jae-myeong Calligraphy — The Language of Home & Time"<br/>
-                공간의 기억과 시간의 흐름을 붓끝으로 담아낸 특별한 예술적 기록입니다. 
-                테조스 블록체인 위에서 영원히 보존되는 이 작품의 가치를 확인하세요.
-              </p>
+              <div className="space-y-2">
+                <p className="text-white text-xl font-black italic">"집은 사는 곳이지 사는 것이 아닙니다."</p>
+                <p className="text-slate-400 text-lg font-medium leading-relaxed">
+                  최승균 작가님이 이재명 대통령의 어록을 캘리그래피로 승화시킨 작품입니다. 
+                  공간의 본질적 가치와 시대의 정신을 붓끝으로 담아낸 특별한 예술적 기록을 테조스 블록체인에서 소유하세요.
+                </p>
+              </div>
             </div>
             <a 
               href="https://objkt.com/tokens/KT1A77WVak4yMFoHDNzpAf8PGA7YLmh5wMJ8/52?ref=tz1eXLHqJXBnp4VFGwFDfMGWcLYVgBUYnA16" 
