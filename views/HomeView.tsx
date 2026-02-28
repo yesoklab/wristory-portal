@@ -34,7 +34,7 @@ const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
             </h1>
             <p className="text-xl text-slate-400 leading-relaxed font-medium">
               공식 홈페이지 `wristory.co.kr`에서 시작된 역사적 여정이 이제 메인넷 **WR 토큰**을 통해 실재하는 자산이 되었습니다. 
-              {contractAddress.slice(0, 8)}... 주소를 통해 발행된 5,116만 개의 토큰은 역사의 영속성을 증명합니다.
+              {contractAddress.slice(0, 8)}... 주소를 통해 발행된 5,104만 개의 토큰은 역사의 영속성을 증명합니다.
             </p>
             <div className="flex flex-wrap gap-5 pt-4">
               <button 
@@ -44,7 +44,7 @@ const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
                 토큰 운영 대시보드 <Zap size={20} className="fill-white" />
               </button>
               <a 
-                href="https://github.com/wristory-project"
+                href="https://github.com/yesoklab/wristory-portal"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-10 py-5 bg-slate-800 hover:bg-slate-750 text-white rounded-3xl font-black text-lg flex items-center gap-4 transition-all border border-slate-700"
@@ -56,7 +56,7 @@ const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
           
           <div className="grid grid-cols-2 gap-4 w-full lg:w-auto shrink-0">
              <div className="bg-slate-950 p-8 rounded-[2.5rem] border border-white/5 space-y-2">
-               <p className="text-3xl font-black text-white">51M</p>
+               <p className="text-3xl font-black text-white">51.04M</p>
                <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest">Total Supply</p>
              </div>
              <div className="bg-slate-950 p-8 rounded-[2.5rem] border border-white/5 space-y-2 translate-y-6">
