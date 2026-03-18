@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ArrowUpRight, History, Zap, ChevronRight, Globe, Sparkles, ExternalLink, ShieldCheck, Github, Lock, Smartphone, CheckCircle2, Loader2, Droplets, BarChart3, ArrowRightLeft } from 'lucide-react';
 
@@ -63,20 +62,20 @@ const LiquidityPoolSection: React.FC = () => {
             <div className="space-y-6">
               <div className="flex justify-between items-end">
                 <span className="text-slate-500 text-xs font-bold uppercase tracking-widest">Total Value Locked</span>
-                <span className="text-2xl font-black text-white">$280.71+</span>
+                <span className="text-2xl font-black text-white">$1,177+</span>
               </div>
               <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                <div className="bg-blue-500 h-full w-[65%]" />
+                <div className="bg-blue-500 h-full w-[92%]" />
               </div>
               
               <div className="grid grid-cols-2 gap-8 pt-4">
                 <div className="space-y-1">
                   <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest">wXTZ Share</p>
-                  <p className="text-lg font-black text-white">2,297.635</p>
+                  <p className="text-lg font-black text-white">5,986.125</p>
                 </div>
                 <div className="space-y-1">
                   <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest">WR Share</p>
-                  <p className="text-lg font-black text-white">229,763.5</p>
+                  <p className="text-lg font-black text-white">598,612.5</p>
                 </div>
               </div>
             </div>
@@ -167,10 +166,10 @@ const LandingPageView: React.FC<Props> = ({ onNavigate }) => {
   const walletTxUrl = 'https://tzkt.io/tz1eXLHqJXBnp4VFGwFDfMGWcLYVgBUYnA16/operations/';
   
   const fighters = [
+    { name: 'WRISTORY UNIVERSE', desc: '이재명 대통령 디지털 유산', img: 'https://amaranth-legal-sole-30.mypinata.cloud/ipfs/bafkreiega3qk3oh3r6u6uwqr2f4uvkynpdpmsrmcwrdlld3oqjmawk62ya' },
+    { name: 'SINGULARITY', desc: 'Manhattan Project Generative', img: 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?q=80&w=1000&auto=format&fit=crop' },
     { name: '김구', desc: '임시정부 주석', img: 'https://amaranth-legal-sole-30.mypinata.cloud/ipfs/bafkreie4kz6obq6hjvwtrn5hi33yptemfch6kkjmwj5h22b7imipxjxd6u' },
     { name: '안중근', desc: '하얼빈 의거', img: 'https://amaranth-legal-sole-30.mypinata.cloud/ipfs/bafkreic4bp2ylmmamglszxxnnbipbqlz535qfrhtlm5sgc72lpssvsi3x4' },
-    { name: '유관순', desc: '3.1 운동의 꽃', img: 'https://amaranth-legal-sole-30.mypinata.cloud/ipfs/bafkreiejrnn2dpacgyyexuil5obifqgnfapdgvctsxwm7ne2ny7d6ifh6i' },
-    { name: '윤동주', desc: '저항의 시인', img: 'https://amaranth-legal-sole-30.mypinata.cloud/ipfs/bafkreibztbschh6cqj465duaajxf7r7n736jgdkuprw24des7nk57wyc3a' },
   ];
 
   return (
@@ -266,6 +265,65 @@ const LandingPageView: React.FC<Props> = ({ onNavigate }) => {
                  TzKT Insight <ArrowUpRight size={14} />
               </a>
            </div>
+        </div>
+      </section>
+
+      {/* Today's NFT Mint - Artwork of the Month */}
+      <section className="max-w-7xl mx-auto px-6 py-20">
+        <div className="flex items-center gap-4 mb-12">
+          <div className="h-px flex-1 bg-slate-800" />
+          <h2 className="text-2xl font-black italic uppercase text-white tracking-widest px-4">Today's NFT Mint</h2>
+          <div className="h-px flex-1 bg-slate-800" />
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <div className="bg-slate-900/40 border border-slate-800 rounded-[3rem] p-8 space-y-6 hover:border-blue-500/30 transition-all group">
+            <div className="aspect-video overflow-hidden rounded-2xl relative">
+              <img 
+                src="https://amaranth-legal-sole-30.mypinata.cloud/ipfs/bafkreiega3qk3oh3r6u6uwqr2f4uvkynpdpmsrmcwrdlld3oqjmawk62ya" 
+                alt="WRISTORY UNIVERSE" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute top-4 left-4 bg-blue-600 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest text-white">Live Mint</div>
+            </div>
+            <div className="space-y-4">
+              <h3 className="text-2xl font-black text-white italic uppercase">WRISTORY UNIVERSE</h3>
+              <p className="text-slate-400 text-sm font-medium leading-relaxed">
+                대한민국 제21대 이재명 대통령의 디지털 유산 컬렉션. 역사적 순간들을 테조스 블록체인에서 영구히 보존합니다.
+              </p>
+              <a 
+                href="https://objkt.com/collections/KT1Kd5mM8CKMxR7rotfK5QNP8V33A5zj6yQk" 
+                target="_blank"
+                className="inline-flex items-center gap-2 text-blue-400 font-black text-xs uppercase tracking-widest hover:text-white transition-colors"
+              >
+                View Collection <ArrowUpRight size={14} />
+              </a>
+            </div>
+          </div>
+
+          <div className="bg-slate-900/40 border border-slate-800 rounded-[3rem] p-8 space-y-6 hover:border-purple-500/30 transition-all group">
+            <div className="aspect-video overflow-hidden rounded-2xl relative">
+              <img 
+                src="https://images.unsplash.com/photo-1614728263952-84ea256f9679?q=80&w=1000&auto=format&fit=crop" 
+                alt="SINGULARITY" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute top-4 left-4 bg-purple-600 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest text-white">Generative</div>
+            </div>
+            <div className="space-y-4">
+              <h3 className="text-2xl font-black text-white italic uppercase">SINGULARITY: Event Horizon</h3>
+              <p className="text-slate-400 text-sm font-medium leading-relaxed">
+                7 generative HTML5 works tracing the Manhattan Project. Each 1/1 live simulation of atomic decay and detonation.
+              </p>
+              <a 
+                href="https://objkt.com/collections/KT1AmcMJuw4unJ7aqjjB2yjrvn2wHfuVSmYH" 
+                target="_blank"
+                className="inline-flex items-center gap-2 text-purple-400 font-black text-xs uppercase tracking-widest hover:text-white transition-colors"
+              >
+                View Collection <ArrowUpRight size={14} />
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 
