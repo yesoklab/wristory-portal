@@ -1,8 +1,27 @@
-
 import React from 'react';
 import { ExternalLink, Tag, Users, Pizza, ArrowUpRight } from 'lucide-react';
 
 const collections = [
+  { 
+    id: 'wristory-universe', 
+    name: 'WRISTORY UNIVERSE', 
+    price: 'New Collection', 
+    count: 100, 
+    image: 'https://amaranth-legal-sole-30.mypinata.cloud/ipfs/bafkreiega3qk3oh3r6u6uwqr2f4uvkynpdpmsrmcwrdlld3oqjmawk62ya', 
+    url: 'https://objkt.com/collections/KT1Kd5mM8CKMxR7rotfK5QNP8V33A5zj6yQk',
+    isNew: true,
+    desc: '대한민국 제21대 이재명 대통령의 디지털 유산 컬렉션. YesOkLab/WRISTORY가 테조스 블록체인에서 선보이는 역사적 순간들을 NFT로 보존합니다.'
+  },
+  { 
+    id: 'singularity-horizon', 
+    name: 'SINGULARITY: Event Horizon Series', 
+    price: 'Generative', 
+    count: 7, 
+    image: 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?q=80&w=1000&auto=format&fit=crop', 
+    url: 'https://objkt.com/collections/KT1AmcMJuw4unJ7aqjjB2yjrvn2wHfuVSmYH',
+    isNew: true,
+    desc: '7 generative HTML5 works tracing the Manhattan Project. Each 1/1 live simulation: atomic decay, fission, chain reaction, implosion, detonation.'
+  },
   { 
     id: 'pizza-100', 
     name: 'Bitcoin Pizza Genesis: 100', 
@@ -64,14 +83,6 @@ const collections = [
     count: 50, 
     image: 'https://amaranth-legal-sole-30.mypinata.cloud/ipfs/bafkreibztbschh6cqj465duaajxf7r7n736jgdkuprw24des7nk57wyc3a',
     url: 'https://objkt.com/collections/KT193FiCoUkthuDXcZ6Chr1J19TRoJqjWSYu'
-  },
-  { 
-    id: '5', 
-    name: '근대화의 발자취', 
-    price: '20 XTZ', 
-    count: 200, 
-    image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000&auto=format&fit=crop', 
-    url: 'https://objkt.com/profile/tz1eXLHqJXBnp4VFGwFDfMGWcLYVgBUYnA16/created'
   },
 ];
 
