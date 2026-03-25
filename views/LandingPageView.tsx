@@ -187,7 +187,7 @@ const LandingPageView: React.FC<Props> = ({ onNavigate }) => {
       </div>
 
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-10">
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-10 bg-[#0b0f19]">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#1e3a8a33_0%,_transparent_70%)] opacity-60" />
         
         <div className="relative z-10 text-center px-6 max-w-5xl space-y-10">
@@ -201,16 +201,24 @@ const LandingPageView: React.FC<Props> = ({ onNavigate }) => {
             </div>
           </div>
 
-          <h1 className="text-6xl md:text-9xl font-black italic tracking-tighter text-white leading-none uppercase">
-            History is <br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">Live Now</span>
+          <h1 className="glitch-text text-5xl md:text-8xl font-black italic tracking-tighter text-white leading-none uppercase" data-text="WRISTORY : The Digital Heritage">
+            WRISTORY : The Digital Heritage
           </h1>
           
-          <p className="text-xl md:text-2xl text-slate-400 font-medium max-w-3xl mx-auto leading-relaxed">
-            독립운동가의 정신이 테조스 메인넷 위에서 WR 토큰으로 부활했습니다. <br/>
-            투명한 소스코드와 확정된 토크노믹스로 역사의 가치를 소유하세요.
-          </p>
+          <div className="flex justify-center">
+            <h2 className="typing-effect text-lg md:text-2xl text-[#00ffcc] font-bold uppercase tracking-widest">
+              Tezos FA2 Asset. 완벽하게 통제되는 온체인 시스템.
+            </h2>
+          </div>
 
+          <div className="stats-container flex flex-wrap items-center justify-center gap-4 md:gap-8 text-[#00ffcc] font-black text-sm md:text-lg uppercase tracking-widest pt-4">
+             <span>Total Supply: 51,169,148 $WR</span>
+             <span className="hidden md:inline text-slate-700">|</span>
+             <span>Holders: 195+</span>
+             <span className="hidden md:inline text-slate-700">|</span>
+             <span>Collections: 19</span>
+          </div>
+          
            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-6">
             <a 
               href={quipuSwapUrl}
