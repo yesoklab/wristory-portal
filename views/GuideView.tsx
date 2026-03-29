@@ -1,40 +1,68 @@
-
 import React from 'react';
-import { CheckCircle2, History, Globe, Coins } from 'lucide-react';
+import { BookOpen, HelpCircle, ShieldCheck, Wallet, ArrowRight } from 'lucide-react';
 
-const GuideView: React.FC<{ lang: 'ko' | 'en' }> = ({ lang }) => {
-  const steps = [
-    { title: '공식 채널 공지 확인', desc: '네이버 블로그 또는 텔레그램 채널을 방문하여 에어드랍 상세 공지 및 참여 자격 조건을 확인합니다.', icon: <History /> },
-    { title: 'Google Form으로 주소 제출', desc: '공지 내에 포함된 링크를 통해 공식 Google 설문지로 이동하여 본인의 테조스(tz1...) 지갑 주소를 제출합니다.', icon: <Globe /> },
-    { title: '제출 명단 관리', desc: '제출된 모든 주소는 안전한 스프레드시트를 통해 수집됩니다. 이를 통해 화이트리스트를 관리하고 NFT를 분배합니다.', icon: <CheckCircle2 /> },
-    { title: 'NFT 수령 및 완료 공지', desc: '등록 기간이 종료된 후, NFT를 일괄 전송합니다. 완료 공지는 모든 공식 채널을 통해 알려드립니다.', icon: <Coins /> }
+interface Props {
+  lang: 'ko' | 'en';
+}
+
+const GuideView: React.FC<Props> = () => {
+  const faqs = [
+    { q: 'WR 토큰은 어디서 사용할 수 있나요? / Where can I use WR tokens?', a: 'WR 토큰은 WRISTORY 생태계 내에서 NFT 민팅, 거버넌스 투표, 그리고 전용 굿즈 구매 등에 사용됩니다. / WR tokens are used for NFT minting, governance voting, and purchasing exclusive goods within the WRISTORY ecosystem.' },
+    { q: '지갑은 어떤 것을 사용해야 하나요? / Which wallet should I use?', a: '테조스 생태계의 대표적인 지갑인 Temple Wallet 또는 Kukai Wallet을 권장합니다. / We recommend Temple Wallet or Kukai Wallet, the leading wallets in the Tezos ecosystem.' },
+    { q: '유동성 공급 보상은 어떻게 받나요? / How do I get liquidity rewards?', a: 'QuipuSwap에 유동성을 공급하면 거래 수수료의 일부를 보상으로 받게 되며, 추후 스테이킹 프로그램도 운영될 예정입니다. / By providing liquidity to QuipuSwap, you receive a portion of transaction fees as rewards.' },
   ];
 
   return (
-    <div className="max-w-4xl mx-auto py-24 px-6 space-y-20 animate-in fade-in duration-700">
-      <div className="text-center space-y-6">
-        <h2 className="text-5xl md:text-7xl font-black italic tracking-tighter text-white uppercase leading-none">Airdrop <br/> Procedure</h2>
-        <p className="text-xl text-slate-500 font-medium">안전하고 투명한 에어드랍 진행을 위한 단계별 안내입니다.</p>
+    <div className="max-w-5xl mx-auto px-6 py-12 space-y-16 animate-in fade-in duration-700">
+      <div className="space-y-4">
+        <h2 className="text-4xl font-black italic uppercase text-white tracking-tighter">User Guide</h2>
+        <p className="text-slate-400 text-lg font-medium">WRISTORY 포털 이용 방법과 자주 묻는 질문들을 확인하세요. / Learn how to use the WRISTORY portal and check FAQs.</p>
       </div>
 
-      <div className="space-y-6">
-        {steps.map((step, i) => (
-          <div key={i} className="group bg-slate-900/40 border border-slate-800 p-10 rounded-[3.5rem] flex flex-col md:flex-row gap-10 hover:border-blue-500/30 transition-all hover:bg-slate-900/60">
-             <div className="w-20 h-20 bg-slate-950 rounded-[2rem] flex items-center justify-center text-blue-500 border border-white/5 shadow-2xl group-hover:scale-110 transition-transform">
-               {/* Fixed: Added <any> type argument to ReactElement to allow size prop in cloneElement */}
-               {React.cloneElement(step.icon as React.ReactElement<any>, { size: 32 })}
-             </div>
-             <div className="flex-1 space-y-4">
-               <div className="flex items-center gap-4">
-                 <span className="text-4xl font-black italic text-blue-600/20">0{i+1}</span>
-                 <h3 className="text-2xl font-black text-white italic tracking-tight">{step.title}</h3>
-               </div>
-               <p className="text-slate-400 text-lg leading-relaxed font-medium">
-                 {step.desc}
-               </p>
-             </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div className="bg-slate-900 border border-slate-800 p-10 rounded-[3rem] space-y-6">
+          <div className="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-500">
+            <Wallet size={28} />
           </div>
-        ))}
+          <h3 className="text-2xl font-black text-white italic uppercase">지갑 설정 가이드 / Wallet Setup Guide</h3>
+          <p className="text-slate-400 font-medium leading-relaxed">
+            테조스 메인넷을 이용하기 위해서는 전용 지갑이 필요합니다. 
+            Temple Wallet을 브라우저 확장 프로그램으로 설치하고 WR 토큰을 추가하는 방법을 알아보세요. <br/>
+            <span className="text-sm opacity-70">A dedicated wallet is required for Tezos Mainnet. Learn how to install Temple Wallet and add WR tokens.</span>
+          </p>
+          <button className="flex items-center gap-2 text-emerald-500 font-black uppercase text-xs tracking-widest hover:gap-4 transition-all">
+            가이드 전문 보기 / View Full Guide <ArrowRight size={16} />
+          </button>
+        </div>
+
+        <div className="bg-slate-900 border border-slate-800 p-10 rounded-[3rem] space-y-6">
+          <div className="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-400">
+            <ShieldCheck size={28} />
+          </div>
+          <h3 className="text-2xl font-black text-white italic uppercase">보안 및 주의사항 / Security & Precautions</h3>
+          <p className="text-slate-400 font-medium leading-relaxed">
+            개인키(Seed Phrase)는 절대 타인에게 공유하지 마세요. 
+            WRISTORY 팀은 어떠한 경우에도 사용자의 개인키를 요구하지 않습니다. <br/>
+            <span className="text-sm opacity-70">Never share your seed phrase. The WRISTORY team will never ask for your private keys.</span>
+          </p>
+          <button className="flex items-center gap-2 text-blue-400 font-black uppercase text-xs tracking-widest hover:gap-4 transition-all">
+            보안 수칙 확인 / Check Security Rules <ArrowRight size={16} />
+          </button>
+        </div>
+      </div>
+
+      <div className="space-y-8">
+        <h3 className="text-2xl font-black italic uppercase text-white flex items-center gap-3">
+          <HelpCircle className="text-blue-500" /> FAQ
+        </h3>
+        <div className="space-y-4">
+          {faqs.map((faq, i) => (
+            <div key={i} className="bg-slate-900/50 border border-slate-800 p-6 rounded-2xl space-y-2">
+              <p className="text-white font-black text-lg">Q. {faq.q}</p>
+              <p className="text-slate-500 font-medium text-sm leading-relaxed">{faq.a}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
