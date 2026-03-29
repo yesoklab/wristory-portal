@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { 
   History, 
@@ -26,6 +25,15 @@ import { getCuratorResponse } from './services/geminiService';
 export type ViewMode = 'PUBLIC' | 'ADMIN';
 export type PublicTab = 'HOME' | 'AIRDROP' | 'GUIDE' | 'AI';
 
+declare global {
+  interface Window {
+    aistudio?: {
+      hasSelectedApiKey: () => Promise<boolean>;
+      openSelectKey: () => Promise<void>;
+    };
+  }
+}
+
 const App: React.FC = () => {
   const [mode, setMode] = useState<ViewMode>('PUBLIC');
   const [activeTab, setActiveTab] = useState<PublicTab>('HOME');
@@ -43,11 +51,9 @@ const App: React.FC = () => {
   }, []);
 
   const checkApiKeyStatus = async () => {
-    // 1. 빌드 타임 주입 키 확인
     const key = process.env.API_KEY;
     const keyExists = !!key && key !== 'undefined' && key.length > 10;
     
-    // 2. AI Studio 선택 키 확인 (있을 경우)
     let selected = false;
     if (window.aistudio && typeof window.aistudio.hasSelectedApiKey === 'function') {
       selected = await window.aistudio.hasSelectedApiKey();
@@ -61,7 +67,6 @@ const App: React.FC = () => {
   const handleTestConnection = async () => {
     setIsTestingKey(true);
     try {
-      // 실제 API 호출로 키 작동 여부 최종 확인
       await getCuratorResponse("Connection test request. Respond shortly.", "en");
       alert("✅ 성공! API 키가 정상적으로 작동하고 있습니다. 이제 모든 기능을 사용하실 수 있습니다.");
       setHasApiKey(true);
@@ -137,18 +142,18 @@ const App: React.FC = () => {
           </div>
 
           <div className="hidden md:flex items-center gap-8">
-            <button onClick={() => setActiveTab('HOME')} className={`text-sm font-bold transition-colors ${activeTab === 'HOME' ? 'text-blue-400' : 'text-slate-400 hover:text-white'}`}>컬렉션</button>
-            <button onClick={() => setActiveTab('AIRDROP')} className={`text-sm font-bold transition-colors ${activeTab === 'AIRDROP' ? 'text-blue-400' : 'text-slate-400 hover:text-white'}`}>에어드랍</button>
-            <button onClick={() => setActiveTab('GUIDE')} className={`text-sm font-bold transition-colors ${activeTab === 'GUIDE' ? 'text-blue-400' : 'text-slate-400 hover:text-white'}`}>가이드</button>
+            <button onClick={() => setActiveTab('HOME')} className={`text-sm font-bold transition-colors ${activeTab === 'HOME' ? 'text-blue-400' : 'text-slate-400 hover:text-white'}`}>컬렉션 / Collections</button>
+            <button onClick={() => setActiveTab('AIRDROP')} className={`text-sm font-bold transition-colors ${activeTab === 'AIRDROP' ? 'text-blue-400' : 'text-slate-400 hover:text-white'}`}>에어드랍 / Airdrop</button>
+            <button onClick={() => setActiveTab('GUIDE')} className={`text-sm font-bold transition-colors ${activeTab === 'GUIDE' ? 'text-blue-400' : 'text-slate-400 hover:text-white'}`}>가이드 / Guide</button>
             <div className="h-6 w-[1px] bg-slate-800 mx-2" />
             <a href={GITHUB_URL} target="_blank" className="p-2 text-slate-400 hover:text-white transition-colors"><Github size={20} /></a>
             {!hasApiKey && (
               <button onClick={handleOpenKeySelector} className="px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-500 text-xs font-black flex items-center gap-2 hover:bg-amber-500/20 transition-all shadow-lg shadow-amber-500/10">
-                <Settings size={14} /> 키 설정
+                <Settings size={14} /> 키 설정 / Key Setup
               </button>
             )}
             <button onClick={() => setActiveTab('AI')} className={`px-5 py-2 rounded-full border border-blue-500/30 bg-blue-500/5 text-blue-400 text-sm font-black flex items-center gap-2 hover:bg-blue-500/10 transition-all shadow-lg shadow-blue-500/10 ${activeTab === 'AI' ? 'bg-blue-500/20 border-blue-500' : ''}`}>
-              <Sparkles size={14} /> AI 큐레이터
+              <Sparkles size={14} /> AI 큐레이터 / AI Curator
             </button>
             <button onClick={() => setMode('ADMIN')} className="p-2.5 bg-blue-600/10 hover:bg-blue-600 rounded-xl text-blue-400 hover:text-white transition-all border border-blue-500/30 group relative shadow-lg shadow-blue-500/5">
               <Lock size={18} />
