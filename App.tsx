@@ -51,7 +51,7 @@ const App: React.FC = () => {
   }, []);
 
   const checkApiKeyStatus = async () => {
-    const key = process.env.GEMINI_API_KEY;
+    const key = process.env.API_KEY;
     const keyExists = !!key && key !== 'undefined' && key.length > 10;
     
     let selected = false;
