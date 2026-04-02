@@ -20,10 +20,11 @@ import AirdropView from './views/AirdropView';
 import GuideView from './views/GuideView';
 import PublicAiView from './views/PublicAiView';
 import AdminDashboard from './views/AdminDashboard';
+import WalletView from './views/WalletView';
 import { getCuratorResponse } from './services/geminiService';
 
 export type ViewMode = 'PUBLIC' | 'ADMIN';
-export type PublicTab = 'HOME' | 'AIRDROP' | 'GUIDE' | 'AI';
+export type PublicTab = 'HOME' | 'AIRDROP' | 'GUIDE' | 'AI' | 'WALLET';
 
 declare global {
   interface Window {
@@ -95,9 +96,10 @@ const App: React.FC = () => {
   const renderPublicContent = () => {
     switch (activeTab) {
       case 'HOME': return <LandingPageView lang={lang} onNavigate={(tab: any) => setActiveTab(tab)} />;
-      case 'AIRDROP': return <AirdropView lang={lang} />;
+      case 'AIRDROP': return <AirdropView lang={lang} onNavigate={(tab: any) => setActiveTab(tab)} />;
       case 'GUIDE': return <GuideView lang={lang} />;
       case 'AI': return <PublicAiView lang={lang} />;
+      case 'WALLET': return <WalletView lang={lang} />;
       default: return <LandingPageView lang={lang} onNavigate={(tab: any) => setActiveTab(tab)} />;
     }
   };
@@ -144,6 +146,7 @@ const App: React.FC = () => {
           <div className="hidden md:flex items-center gap-8">
             <button onClick={() => setActiveTab('HOME')} className={`text-sm font-bold transition-colors ${activeTab === 'HOME' ? 'text-blue-400' : 'text-slate-400 hover:text-white'}`}>컬렉션 / Collections</button>
             <button onClick={() => setActiveTab('AIRDROP')} className={`text-sm font-bold transition-colors ${activeTab === 'AIRDROP' ? 'text-blue-400' : 'text-slate-400 hover:text-white'}`}>에어드랍 / Airdrop</button>
+            <button onClick={() => setActiveTab('WALLET')} className={`text-sm font-bold transition-colors ${activeTab === 'WALLET' ? 'text-blue-400' : 'text-slate-400 hover:text-white'}`}>내 지갑 / My Wallet</button>
             <button onClick={() => setActiveTab('GUIDE')} className={`text-sm font-bold transition-colors ${activeTab === 'GUIDE' ? 'text-blue-400' : 'text-slate-400 hover:text-white'}`}>가이드 / Guide</button>
             <div className="h-6 w-[1px] bg-slate-800 mx-2" />
             <a href={GITHUB_URL} target="_blank" className="p-2 text-slate-400 hover:text-white transition-colors"><Github size={20} /></a>
@@ -169,6 +172,7 @@ const App: React.FC = () => {
           <div className="md:hidden absolute top-20 left-0 w-full bg-[#0F111A] border-b border-slate-800 p-8 flex flex-col gap-6 animate-in slide-in-from-top duration-300 shadow-2xl">
             <button onClick={() => { setActiveTab('HOME'); setIsMenuOpen(false); }} className="text-xl font-bold text-white">컬렉션</button>
             <button onClick={() => { setActiveTab('AIRDROP'); setIsMenuOpen(false); }} className="text-xl font-bold text-white">에어드랍</button>
+            <button onClick={() => { setActiveTab('WALLET'); setIsMenuOpen(false); }} className="text-xl font-bold text-white">내 지갑</button>
             <button onClick={() => { setActiveTab('GUIDE'); setIsMenuOpen(false); }} className="text-xl font-bold text-white">가이드</button>
             <button onClick={() => { setActiveTab('AI'); setIsMenuOpen(false); }} className="text-xl font-bold text-blue-400 flex justify-between items-center">AI 큐레이터 <Sparkles size={18} /></button>
             <div className="h-[1px] bg-slate-800 my-2" />
