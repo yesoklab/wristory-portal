@@ -1,22 +1,15 @@
-
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import tailwindcss from '@theme/v4';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
   define: {
-    // Vercel 빌드 시 API_KEY가 비어있을 경우를 대비해 빈 문자열 폴백 추가
     'process.env.API_KEY': JSON.stringify(process.env.API_KEY || ''),
+    'global': 'window',
   },
-  base: './',
   build: {
     outDir: 'dist',
-    assetsDir: 'assets',
     sourcemap: false,
-    rollupOptions: {
-      output: {
-        manualChunks: undefined
-      }
-    }
   }
 });
