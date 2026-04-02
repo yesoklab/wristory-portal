@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Gift, Zap, CheckCircle2, Clock, Users, ExternalLink, Twitter, Mail, MessageSquare, Loader2 } from 'lucide-react';
+import { Gift, Zap, CheckCircle2, Clock, Users, ExternalLink, Twitter, Mail, MessageSquare, Loader2, AlertCircle, Wallet } from 'lucide-react';
 
 interface Props {
   lang: 'ko' | 'en';
+  onNavigate?: (tab: any) => void;
 }
 
-const AirdropView: React.FC<Props> = () => {
+const AirdropView: React.FC<Props> = ({ lang, onNavigate }) => {
   const [formData, setFormData] = useState({ twitter: '', gmail: '', reddit: '' });
   const [status, setStatus] = useState<'IDLE' | 'SUBMITTING' | 'SUCCESS'>('IDLE');
 
@@ -25,7 +26,28 @@ const AirdropView: React.FC<Props> = () => {
     <div className="max-w-7xl mx-auto px-6 py-12 space-y-12 animate-in fade-in duration-700">
       <div className="text-center space-y-4">
         <h2 className="text-4xl md:text-6xl font-black italic uppercase text-white tracking-tighter">WR Token Airdrop</h2>
-        <p className="text-slate-400 text-lg max-w-2xl mx-auto font-medium">
+        
+        {/* Emergency Wallet Notice */}
+        <div className="max-w-2xl mx-auto bg-amber-500/10 border border-amber-500/30 rounded-3xl p-6 flex flex-col md:flex-row items-center gap-6 shadow-2xl shadow-amber-500/5 animate-in slide-in-from-top duration-700">
+          <div className="w-12 h-12 bg-amber-500/20 rounded-xl flex items-center justify-center text-amber-500 shrink-0">
+            <AlertCircle size={24} className="animate-pulse" />
+          </div>
+          <div className="text-left space-y-1">
+            <h4 className="text-sm font-black text-white italic uppercase tracking-tight">Temple Wallet Mobile Issue</h4>
+            <p className="text-[10px] text-slate-400 font-bold leading-relaxed">
+              현재 템플 월렛 모바일에서 WR 토큰 인식 오류가 발생하고 있습니다. <br/>
+              <span className="text-amber-500">Kukai</span> 또는 <span className="text-emerald-500">AirGap</span> 지갑 사용을 권장하며, 아래 버튼을 통해 웹에서 직접 자산을 관리할 수 있습니다.
+            </p>
+          </div>
+          <button 
+            onClick={() => onNavigate?.('WALLET')}
+            className="px-6 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all flex items-center gap-2 shrink-0"
+          >
+            <Wallet size={14} /> 내 지갑 관리 / Manage Wallet
+          </button>
+        </div>
+
+        <p className="text-slate-400 text-lg max-w-2xl mx-auto font-medium pt-4">
           Kukai 지갑 사용자를 위한 특별 에어드랍! <br/>
           트위터, 지메일, 레딧 계정만 입력하면 <span className="text-blue-400 font-black">21 WR 토큰</span>을 즉시 에어드랍 해드립니다. <br/>
           <span className="text-sm opacity-70 italic">Exclusive Airdrop for Kukai Wallet users! Enter your social accounts to receive 21 WR tokens.</span>
