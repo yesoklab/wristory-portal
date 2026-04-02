@@ -1,5 +1,24 @@
 import React, { useState } from 'react';
-import { ArrowUpRight, History, Zap, ChevronRight, Globe, Sparkles, ExternalLink, ShieldCheck, Github, Lock, Smartphone, CheckCircle2, Loader2, Droplets, BarChart3, ArrowRightLeft } from 'lucide-react';
+import { 
+  ArrowUpRight, 
+  History, 
+  Zap, 
+  ChevronRight, 
+  Globe, 
+  Sparkles, 
+  ExternalLink, 
+  ShieldCheck, 
+  Github, 
+  Lock, 
+  Smartphone, 
+  CheckCircle2, 
+  Loader2, 
+  Droplets, 
+  BarChart3, 
+  ArrowRightLeft,
+  AlertCircle,
+  Wallet
+} from 'lucide-react';
 
 interface Props {
   lang: 'ko' | 'en';
@@ -249,6 +268,26 @@ const LandingPageView: React.FC<Props> = ({ onNavigate }) => {
           </div>
           
           <div className="pt-8 flex flex-col items-center gap-4">
+            {/* Temple Wallet Issue Notice */}
+            <div className="bg-amber-500/10 border border-amber-500/30 rounded-3xl p-6 max-w-2xl w-full flex flex-col md:flex-row items-center gap-6 shadow-2xl shadow-amber-500/5 animate-in slide-in-from-bottom duration-700">
+              <div className="w-12 h-12 bg-amber-500/20 rounded-xl flex items-center justify-center text-amber-500 shrink-0">
+                <AlertCircle size={24} className="animate-pulse" />
+              </div>
+              <div className="text-left space-y-1">
+                <h4 className="text-sm font-black text-white italic uppercase tracking-tight">Temple Wallet Mobile Issue</h4>
+                <p className="text-[10px] text-slate-400 font-bold leading-relaxed">
+                  현재 템플 월렛 모바일에서 WR 토큰 인식 오류가 발생하고 있습니다. <br/>
+                  <span className="text-amber-500">Kukai</span> 또는 <span className="text-emerald-500">AirGap</span> 지갑 사용을 권장하며, 아래 버튼을 통해 웹에서 직접 자산을 관리할 수 있습니다.
+                </p>
+              </div>
+              <button 
+                onClick={() => onNavigate('WALLET')}
+                className="px-6 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all flex items-center gap-2 shrink-0"
+              >
+                <Wallet size={14} /> 내 지갑 관리 / Manage Wallet
+              </button>
+            </div>
+
             <div className="flex items-center gap-3 bg-slate-900/80 px-6 py-3 rounded-2xl border border-blue-500/20 shadow-lg">
               <div className="w-8 h-8 bg-blue-500/10 rounded-lg flex items-center justify-center">
                 <ShieldCheck size={18} className="text-blue-400" />
