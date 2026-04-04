@@ -1,32 +1,30 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   define: {
     'process.env.API_KEY': JSON.stringify(process.env.API_KEY || ''),
-    'global': 'window',
+    'global': 'globalThis',
   },
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    sourcemap: false,
     commonjsOptions: {
       transformMixedEsModules: true,
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          tezos: ['@taquito/taquito', '@taquito/beacon-wallet'],
+        },
+      },
     },
   },
   plugins: [
     react(),
     tailwindcss(),
-    nodePolyfills({
-      include: ['crypto', 'stream', 'util', 'buffer'],
-      globals: {
-        Buffer: true,
-        global: true,
-        process: true,
-      },
-    }),
   ],
   server: {
     port: 3000,
