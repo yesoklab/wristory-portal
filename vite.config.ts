@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   define: {
+    'process.env': {},
     'process.env.API_KEY': JSON.stringify(process.env.API_KEY || ''),
     'global': 'globalThis',
   },
@@ -12,14 +13,6 @@ export default defineConfig({
     sourcemap: false,
     commonjsOptions: {
       transformMixedEsModules: true,
-    },
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          tezos: ['@taquito/taquito', '@taquito/beacon-wallet'],
-        },
-      },
     },
   },
   plugins: [
