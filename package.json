@@ -1,4 +1,15 @@
-"dependencies": {
+{
+  "name": "wristory-portal",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
     "@airgap/beacon-sdk": "^4.8.1",
     "@google/genai": "^1.39.0",
     "@tailwindcss/vite": "^4.2.1",
@@ -18,3 +29,4 @@
     "typescript": "^5.7.3",
     "vite": "^6.0.0"
   }
+}
