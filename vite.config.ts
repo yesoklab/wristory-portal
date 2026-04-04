@@ -1,16 +1,35 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
+// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
   define: {
-    // Vercel 빌드 시 API_KEY가 비어있을 경우를 대비해 빈 문자열 폴백 추가
     'process.env.API_KEY': JSON.stringify(process.env.API_KEY || ''),
-    'global': 'window', // 테조스 지갑 라이브러리 오류 방지용
+    'global': 'window',
   },
   build: {
     outDir: 'dist',
-    sourcemap: false,
-  }
-});
+    sourcemap: true,
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
+  },
+  plugins: [
+    react(),
+    tailwindcss(),
+    nodePolyfills({
+      include: ['crypto', 'stream', 'util', 'buffer'],
+      globals: {
+        Buffer: true,
+        global: true,
+        process: true,
+      },
+    }),
+  ],
+  server: {
+    port: 3000,
+    host: '0.0.0.0',
+  },
+})
