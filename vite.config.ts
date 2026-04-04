@@ -4,8 +4,12 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   define: {
-    'process.env': {},
-    'process.env.API_KEY': JSON.stringify(process.env.API_KEY || ''),
+    'process': JSON.stringify({
+      env: {},
+      version: '',
+      platform: 'browser',
+      browser: true,
+    }),
     'global': 'globalThis',
   },
   build: {
