@@ -15,6 +15,8 @@ import {
   Zap,
   Globe
 } from 'lucide-react';
+
+// 중요: Root에 있는 폴더를 참조하기 위해 ../ 를 사용합니다.
 import LandingPageView from '../views/LandingPageView';
 import AirdropView from '../views/AirdropView';
 import GuideView from '../views/GuideView';
@@ -69,12 +71,12 @@ const App: React.FC = () => {
     setIsTestingKey(true);
     try {
       await getCuratorResponse("Connection test request. Respond shortly.", "en");
-      alert("✅ 성공! API 키가 정상적으로 작동하고 있습니다.");
+      alert("✅ 성공! API 키가 정상적으로 작동하고 있습니다. 이제 모든 기능을 사용하실 수 있습니다.");
       setHasApiKey(true);
       setShowKeyWarning(false);
     } catch (e: any) {
       console.error("Connection Test Failed:", e);
-      alert(`❌ 아직 연결되지 않았습니다.\n\nVercel 대시보드 [Deployments]에서 'Redeploy'를 실행해 주세요.`);
+      alert(`❌ 아직 연결되지 않았습니다.\n\n원인: Vercel 배포 시점에 키가 포함되지 않았을 수 있습니다.\n해결: Vercel 대시보드 [Deployments]에서 'Redeploy'를 실행해 주세요.`);
     } finally {
       setIsTestingKey(false);
     }
@@ -93,7 +95,7 @@ const App: React.FC = () => {
     try {
       return <AdminDashboard onExit={() => setMode('PUBLIC')} />;
     } catch (e) {
-      return <div className="p-20 text-center text-red-500 font-bold">Admin Dashboard Load Error.</div>;
+      return <div className="p-20 text-center text-red-500 font-bold">Admin Dashboard Load Error. Please refresh.</div>;
     }
   }
 
@@ -109,7 +111,7 @@ const App: React.FC = () => {
       }
     } catch (e) {
       console.error("Render Error:", e);
-      return <div className="p-20 text-center text-white font-bold">시스템 로딩 중 오류가 발생했습니다.</div>;
+      return <div className="p-20 text-center text-white font-bold">시스템 로딩 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</div>;
     }
   };
 
@@ -119,11 +121,22 @@ const App: React.FC = () => {
         <div className="bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 px-6 py-4 text-center text-[12px] font-black flex flex-wrap items-center justify-center gap-6 z-[60] relative shadow-2xl border-b border-white/20">
           <div className="flex items-center gap-3">
             <AlertCircle size={18} className="animate-bounce" /> 
-            <span className="tracking-tight text-sm">Vercel에 API_KEY 등록 후 반드시 <b>[재배포]</b>가 완료되어야 합니다!</span>
+            <span className="tracking-tight text-sm">Vercel에 API_KEY 등록 후 반드시 <b>[재배포]</b>가 완료되어야 시스템이 활성화됩니다!</span>
           </div>
           <div className="flex items-center gap-3">
-            <button onClick={handleTestConnection} disabled={isTestingKey} className="px-5 py-2 bg-slate-950 text-white rounded-xl hover:bg-black transition-all flex items-center gap-2 shadow-lg disabled:opacity-50 active:scale-95">
-              {isTestingKey ? <RefreshCw size={14} className="animate-spin" /> : <Zap size={14} className="text-amber-400" />} 실시간 연결 테스트
+            <button 
+              onClick={handleTestConnection} 
+              disabled={isTestingKey}
+              className="px-5 py-2 bg-slate-950 text-white rounded-xl hover:bg-black transition-all flex items-center gap-2 shadow-lg disabled:opacity-50 active:scale-95"
+            >
+              {isTestingKey ? <RefreshCw size={14} className="animate-spin" /> : <Zap size={14} className="text-amber-400" />} 
+              실시간 연결 테스트
+            </button>
+            <button 
+              onClick={() => setActiveTab('GUIDE')} 
+              className="px-5 py-2 bg-white/20 border border-black/10 rounded-xl hover:bg-white/30 transition-all flex items-center gap-2"
+            >
+              <Globe size={14} /> 해결 가이드
             </button>
           </div>
         </div>
@@ -142,12 +155,19 @@ const App: React.FC = () => {
           </div>
 
           <div className="hidden md:flex items-center gap-8">
-            <button onClick={() => setActiveTab('HOME')} className={`text-sm font-bold transition-colors ${activeTab === 'HOME' ? 'text-blue-400' : 'text-slate-400 hover:text-white'}`}>컬렉션</button>
-            <button onClick={() => setActiveTab('AIRDROP')} className={`text-sm font-bold transition-colors ${activeTab === 'AIRDROP' ? 'text-blue-400' : 'text-slate-400 hover:text-white'}`}>에어드랍</button>
-            <button onClick={() => setActiveTab('WALLET')} className={`text-sm font-bold transition-colors ${activeTab === 'WALLET' ? 'text-blue-400' : 'text-slate-400 hover:text-white'}`}>내 지갑</button>
-            <button onClick={() => setActiveTab('GUIDE')} className={`text-sm font-bold transition-colors ${activeTab === 'GUIDE' ? 'text-blue-400' : 'text-slate-400 hover:text-white'}`}>가이드</button>
+            <button onClick={() => setActiveTab('HOME')} className={`text-sm font-bold transition-colors ${activeTab === 'HOME' ? 'text-blue-400' : 'text-slate-400 hover:text-white'}`}>컬렉션 / Collections</button>
+            <button onClick={() => setActiveTab('AIRDROP')} className={`text-sm font-bold transition-colors ${activeTab === 'AIRDROP' ? 'text-blue-400' : 'text-slate-400 hover:text-white'}`}>에어드랍 / Airdrop</button>
+            <button onClick={() => setActiveTab('WALLET')} className={`text-sm font-bold transition-colors ${activeTab === 'WALLET' ? 'text-blue-400' : 'text-slate-400 hover:text-white'}`}>내 지갑 / My Wallet</button>
+            <button onClick={() => setActiveTab('GUIDE')} className={`text-sm font-bold transition-colors ${activeTab === 'GUIDE' ? 'text-blue-400' : 'text-slate-400 hover:text-white'}`}>가이드 / Guide</button>
+            <div className="h-6 w-[1px] bg-slate-800 mx-2" />
+            <a href={GITHUB_URL} target="_blank" className="p-2 text-slate-400 hover:text-white transition-colors"><Github size={20} /></a>
+            {!hasApiKey && (
+              <button onClick={handleOpenKeySelector} className="px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-500 text-xs font-black flex items-center gap-2 hover:bg-amber-500/20 transition-all shadow-lg shadow-amber-500/10">
+                <Settings size={14} /> 키 설정 / Key Setup
+              </button>
+            )}
             <button onClick={() => setActiveTab('AI')} className={`px-5 py-2 rounded-full border border-blue-500/30 bg-blue-500/5 text-blue-400 text-sm font-black flex items-center gap-2 hover:bg-blue-500/10 transition-all shadow-lg shadow-blue-500/10 ${activeTab === 'AI' ? 'bg-blue-500/20 border-blue-500' : ''}`}>
-              <Sparkles size={14} /> AI 큐레이터
+              <Sparkles size={14} /> AI 큐레이터 / AI Curator
             </button>
             <button onClick={() => setMode('ADMIN')} className="p-2.5 bg-blue-600/10 hover:bg-blue-600 rounded-xl text-blue-400 hover:text-white transition-all border border-blue-500/30 group relative shadow-lg shadow-blue-500/5">
               <Lock size={18} />
@@ -158,14 +178,33 @@ const App: React.FC = () => {
             {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
+
+        {isMenuOpen && (
+          <div className="md:hidden absolute top-20 left-0 w-full bg-[#0F111A] border-b border-slate-800 p-8 flex flex-col gap-6 animate-in slide-in-from-top duration-300 shadow-2xl">
+            <button onClick={() => { setActiveTab('HOME'); setIsMenuOpen(false); }} className="text-xl font-bold text-white">컬렉션</button>
+            <button onClick={() => { setActiveTab('AIRDROP'); setIsMenuOpen(false); }} className="text-xl font-bold text-white">에어드랍</button>
+            <button onClick={() => { setActiveTab('WALLET'); setIsMenuOpen(false); }} className="text-xl font-bold text-white">내 지갑</button>
+            <button onClick={() => { setActiveTab('GUIDE'); setIsMenuOpen(false); }} className="text-xl font-bold text-white">가이드</button>
+            <button onClick={() => { setActiveTab('AI'); setIsMenuOpen(false); }} className="text-xl font-bold text-blue-400 flex justify-between items-center">AI 큐레이터 <Sparkles size={18} /></button>
+            <div className="h-[1px] bg-slate-800 my-2" />
+            <a href={GITHUB_URL} target="_blank" className="text-xl font-bold text-slate-400 flex items-center gap-3"><Github size={20}/> GitHub Project</a>
+            <button onClick={() => { setMode('ADMIN'); setIsMenuOpen(false); }} className="w-full py-5 bg-blue-600 text-white rounded-2xl font-black flex items-center justify-center gap-3 shadow-xl"><ShieldAlert size={20} /> 관리자 모드 접속</button>
+          </div>
+        )}
       </nav>
 
       <main>{renderPublicContent()}</main>
 
       <footer className="border-t border-slate-800 bg-[#0B0D14] py-20 mt-20">
         <div className="max-w-7xl mx-auto px-6 flex flex-col items-center text-center space-y-8">
+           <div className="flex items-center gap-6">
+              <div className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center border border-slate-800"><History className="text-slate-600" size={24} /></div>
+              <a href={GITHUB_URL} target="_blank" className="text-slate-500 hover:text-white transition-colors"><Github size={24} /></a>
+           </div>
            <p className="text-slate-500 text-xs max-w-md leading-relaxed">
              © 2025 YesOkLab | WRISTORY Project. <br/>
+             Official Repo: {GITHUB_URL} <br/>
+             Contract: {CONTRACT_ADDRESS} <br/>
              블록체인 기술을 통한 역사적 가치의 디지털 보존
            </p>
         </div>
