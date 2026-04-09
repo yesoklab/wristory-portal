@@ -3,6 +3,26 @@ import { ExternalLink, Tag, Users, Pizza, ArrowUpRight, ShieldCheck } from 'luci
 
 const collections = [
   { 
+    id: 'running-bitcoin', 
+    name: 'Running Bitcoin', 
+    price: 'New Collection', 
+    count: 1, 
+    image: 'https://ipfs.io/ipfs/bafybeiantl57cmtql3gxidg26blmrc6ezajhh5bnncpih3wlehhpg7bm34', 
+    url: 'https://objkt.com/collections/KT1XMCJGLo9vnHRAf5LQdw9z3BF9yGVfffnm',
+    isNew: true,
+    desc: 'Hal Finney\'s legendary "Running bitcoin" tweet, preserved as a digital heritage on Tezos. / 할 피니의 전설적인 "Running bitcoin" 트윗을 테조스 디지털 유산으로 보존합니다.'
+  },
+  { 
+    id: 'tezchain-protocol', 
+    name: 'TEZCHAIN: Protocol Series', 
+    price: 'Generative', 
+    count: 21, 
+    image: 'https://amaranth-legal-sole-30.mypinata.cloud/ipfs/bafybeihkplido56mrfsurl5fb65bpwypxrcik2kmqdxotemodowsdxg2cm', 
+    url: 'https://objkt.com/collections/KT1MhvVaRjuyjo9s1u6xmpK7cwEFXFHXgMZD',
+    isNew: true,
+    desc: 'Tezos 블록체인의 기술적 진화를 시각화한 제너레이티브 아트 컬렉션입니다. / Generative NFT collection exploring Tezos blockchain evolution.'
+  },
+  { 
     id: 'wristory-universe', 
     name: 'WRISTORY UNIVERSE', 
     price: 'New Collection', 
